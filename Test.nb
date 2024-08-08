@@ -10,19 +10,689 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[       832,         34]
-NotebookOptionsPosition[       561,         21]
-NotebookOutlinePosition[       972,         37]
-CellTagsIndexPosition[       929,         34]
+NotebookDataLength[     33374,        725]
+NotebookOptionsPosition[     31421,        691]
+NotebookOutlinePosition[     31833,        707]
+CellTagsIndexPosition[     31790,        704]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"PacletDirectoryLoad", "[", 
+   RowBox[{"NotebookDirectory", "[", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"<<", "TheDiractionary`"}]}], "Input",
+ CellChangeTimes->{{3.932031870394769*^9, 3.932031875245756*^9}, {
+  3.9320319200823593`*^9, 3.932031925672106*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"9da189ad-9ac8-e540-b302-106408bb5374"],
+
+Cell[BoxData[{
+ RowBox[{"tiles", ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dict", " ", "=", " ", 
+   RowBox[{"RandomSample", "[", 
+    RowBox[{"Import", "[", 
+     RowBox[{"\"\<CSW21.txt\>\"", ",", "\"\<List\>\""}], "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"wordsByLength", "=", 
+   RowBox[{"GroupBy", "[", 
+    RowBox[{"dict", ",", "StringLength"}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.932032474017034*^9, 3.932032474451088*^9}, {
+  3.9320644925516033`*^9, 3.932064505173868*^9}},
+ CellLabel->"In[3]:=",ExpressionUUID->"548b57a5-237a-cf45-a6cc-0229dd320acc"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Function", " ", "to", " ", "reduce", " ", "the", " ", "tile", " ", 
+    "count", " ", "due", " ", "to", " ", "a", " ", 
+    RowBox[{"word", "."}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"reduceTileCount", "[", 
+    RowBox[{"tileCounts_", ",", "word_"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"tiles", "=", 
+        RowBox[{"Characters", "[", "word", "]"}]}], ",", " ", "charCounts", 
+       ",", " ", "newCounts"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"charCounts", "=", 
+       RowBox[{"Counts", "[", 
+        RowBox[{"Characters", "[", "word", "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"newCounts", "=", "\[IndentingNewLine]", "    ", 
+       RowBox[{"Merge", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"tileCounts", ",", 
+           RowBox[{"Map", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"#", "->", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"tileCounts", "[", "#", "]"}], "-", 
+                  RowBox[{"charCounts", "[", "#", "]"}]}], ")"}]}], ")"}], 
+              "&"}], ",", "tiles"}], "]"}]}], "}"}], ",", "Last"}], "]"}]}], 
+      ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Min", "[", "newCounts", "]"}], "<", "0"}], ",", " ", 
+        RowBox[{"Return", "[", "tileCounts", "]"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Return", "[", "newCounts", "]"}]}]}], "\[IndentingNewLine]", 
+    "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.9320645186432896`*^9, 3.932064730465351*^9}},
+ CellLabel->"In[24]:=",ExpressionUUID->"d014fea4-5e74-df42-a054-3d48177ca32b"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"tileCounts", "=", 
+    RowBox[{"tiles", "[", 
+     RowBox[{"[", 
+      RowBox[{"All", ",", "\"\<Quantity\>\""}], "]"}], "]"}]}], ";"}], 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Get", " ", "the", " ", "quantities", " ", "of", " ", "each", " ", 
+    "tile"}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"string1", "=", 
+  RowBox[{"RandomChoice", "[", 
+   RowBox[{"wordsByLength", "[", "7", "]"}], "]"}]}], "\n", 
+ RowBox[{"tileCounts", "=", 
+  RowBox[{"reduceTileCount", "[", 
+   RowBox[{"tileCounts", ",", "string1"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Total", "[", 
+   RowBox[{"Values", "[", "tileCounts", "]"}], "]"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Use", " ", "the", " ", "function", " ", "on", " ", "5", " ", "random", 
+    " ", "8", " ", "letter", " ", "words"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Do", "[", "\[IndentingNewLine]", "  ", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"word", "=", 
+     RowBox[{"RandomChoice", "[", 
+      RowBox[{"wordsByLength", "[", "8", "]"}], "]"}]}], ";", 
+    "\[IndentingNewLine]", "  ", 
+    RowBox[{"newTileCounts", "=", 
+     RowBox[{"reduceTileCount", "[", 
+      RowBox[{"tileCounts", ",", "word"}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"newTileCounts", "===", "tileCounts"}], ",", " ", 
+      RowBox[{"Continue", "[", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"tileCounts", "=", "newTileCounts"}], ";", "\[IndentingNewLine]", 
+    "  ", 
+    RowBox[{"Print", "[", 
+     RowBox[{
+     "\"\<Word: \>\"", ",", "word", ",", "\"\< New Tile Counts: \>\"", ",", 
+      "tileCounts", ",", "\"\<Tiles Left: \>\"", ",", 
+      RowBox[{"Total", "[", 
+       RowBox[{"Values", "[", "tileCounts", "]"}], "]"}]}], "]"}]}], ",", 
+   "\[IndentingNewLine]", "  ", 
+   RowBox[{"{", "30000", "}"}]}], "\[IndentingNewLine]", "]"}]}], "Input",
+ CellChangeTimes->{
+  3.932032922773359*^9, {3.932032963835932*^9, 3.932032967151645*^9}, {
+   3.932033000947845*^9, 3.9320330886062145`*^9}, {3.9320337822555046`*^9, 
+   3.932033930164633*^9}, 3.932034060523548*^9, {3.9320340922087326`*^9, 
+   3.932034096355591*^9}, {3.932034126373514*^9, 3.9320341290775433`*^9}, {
+   3.9320341933946047`*^9, 3.9320342193474617`*^9}, {3.9320343667914696`*^9, 
+   3.9320343828666368`*^9}, {3.932034421449625*^9, 3.932034454975839*^9}, {
+   3.932034496192863*^9, 3.932034496880401*^9}, {3.932035364550907*^9, 
+   3.932035368729656*^9}, {3.932064537066389*^9, 3.932064542935087*^9}, {
+   3.932064749409771*^9, 3.9320649411293354`*^9}, {3.932065013728836*^9, 
+   3.9320650552070847`*^9}},
+ CellLabel->"In[44]:=",ExpressionUUID->"ebd6d19e-d987-3641-8daa-913fb61651cf"],
+
+Cell[BoxData["\<\"VERRINE\"\>"], "Output",
+ CellChangeTimes->{
+  3.9320649368965607`*^9, 3.9320649912822247`*^9, {3.932065022640728*^9, 
+   3.9320650560283337`*^9}},
+ CellLabel->"Out[45]=",ExpressionUUID->"1901ed0f-b9c1-2344-a2cd-45b817c256c2"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"\<\"A\"\>", "\[Rule]", "9"}], ",", 
+   RowBox[{"\<\"B\"\>", "\[Rule]", "2"}], ",", 
+   RowBox[{"\<\"C\"\>", "\[Rule]", "2"}], ",", 
+   RowBox[{"\<\"D\"\>", "\[Rule]", "4"}], ",", 
+   RowBox[{"\<\"E\"\>", "\[Rule]", "10"}], ",", 
+   RowBox[{"\<\"F\"\>", "\[Rule]", "2"}], ",", 
+   RowBox[{"\<\"G\"\>", "\[Rule]", "3"}], ",", 
+   RowBox[{"\<\"H\"\>", "\[Rule]", "2"}], ",", 
+   RowBox[{"\<\"I\"\>", "\[Rule]", "8"}], ",", 
+   RowBox[{"\<\"J\"\>", "\[Rule]", "1"}], ",", 
+   RowBox[{"\<\"K\"\>", "\[Rule]", "1"}], ",", 
+   RowBox[{"\<\"L\"\>", "\[Rule]", "4"}], ",", 
+   RowBox[{"\<\"M\"\>", "\[Rule]", "2"}], ",", 
+   RowBox[{"\<\"N\"\>", "\[Rule]", "5"}], ",", 
+   RowBox[{"\<\"O\"\>", "\[Rule]", "8"}], ",", 
+   RowBox[{"\<\"P\"\>", "\[Rule]", "2"}], ",", 
+   RowBox[{"\<\"Q\"\>", "\[Rule]", "1"}], ",", 
+   RowBox[{"\<\"R\"\>", "\[Rule]", "4"}], ",", 
+   RowBox[{"\<\"S\"\>", "\[Rule]", "4"}], ",", 
+   RowBox[{"\<\"T\"\>", "\[Rule]", "6"}], ",", 
+   RowBox[{"\<\"U\"\>", "\[Rule]", "4"}], ",", 
+   RowBox[{"\<\"V\"\>", "\[Rule]", "1"}], ",", 
+   RowBox[{"\<\"W\"\>", "\[Rule]", "2"}], ",", 
+   RowBox[{"\<\"X\"\>", "\[Rule]", "1"}], ",", 
+   RowBox[{"\<\"Y\"\>", "\[Rule]", "2"}], ",", 
+   RowBox[{"\<\"Z\"\>", "\[Rule]", "1"}], ",", 
+   RowBox[{"\<\"?\"\>", "\[Rule]", "2"}]}], "\[RightAssociation]"}]], "Output",
+ CellChangeTimes->{
+  3.9320649368965607`*^9, 3.9320649912822247`*^9, {3.932065022640728*^9, 
+   3.9320650560343304`*^9}},
+ CellLabel->"Out[46]=",ExpressionUUID->"50b059f7-aefe-0944-8ee1-b87bdbb0cf21"],
+
+Cell[BoxData["93"], "Output",
+ CellChangeTimes->{
+  3.9320649368965607`*^9, 3.9320649912822247`*^9, {3.932065022640728*^9, 
+   3.9320650560393353`*^9}},
+ CellLabel->"Out[47]=",ExpressionUUID->"5b1c18fb-9cf0-9c4c-ba0d-874a0c00dff1"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Word: \"\>", "\[InvisibleSpace]", "\<\"PERINEUM\"\>", 
+   "\[InvisibleSpace]", "\<\" New Tile Counts: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"A\"\>", "\[Rule]", "9"}], ",", 
+     RowBox[{"\<\"B\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"C\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"D\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"E\"\>", "\[Rule]", "8"}], ",", 
+     RowBox[{"\<\"F\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"G\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"H\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"I\"\>", "\[Rule]", "7"}], ",", 
+     RowBox[{"\<\"J\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"K\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"L\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"M\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"N\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"O\"\>", "\[Rule]", "8"}], ",", 
+     RowBox[{"\<\"P\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Q\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"R\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"S\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"T\"\>", "\[Rule]", "6"}], ",", 
+     RowBox[{"\<\"U\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"V\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"W\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"X\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Y\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"Z\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"?\"\>", "\[Rule]", "2"}]}], "\[RightAssociation]"}], 
+   "\[InvisibleSpace]", "\<\"Tiles Left: \"\>", "\[InvisibleSpace]", "85"}],
+  SequenceForm[
+  "Word: ", "PERINEUM", " New Tile Counts: ", <|
+   "A" -> 9, "B" -> 2, "C" -> 2, "D" -> 4, "E" -> 8, "F" -> 2, "G" -> 3, "H" -> 
+    2, "I" -> 7, "J" -> 1, "K" -> 1, "L" -> 4, "M" -> 1, "N" -> 4, "O" -> 8, 
+    "P" -> 1, "Q" -> 1, "R" -> 3, "S" -> 4, "T" -> 6, "U" -> 3, "V" -> 1, "W" -> 
+    2, "X" -> 1, "Y" -> 2, "Z" -> 1, "?" -> 2|>, "Tiles Left: ", 85],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.9320649369112835`*^9, 3.932064991294235*^9, {3.932065022662327*^9, 
+   3.932065056047329*^9}},
+ CellLabel->
+  "During evaluation of \
+In[44]:=",ExpressionUUID->"a3427f6d-e696-8b48-8629-e83229417691"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Word: \"\>", "\[InvisibleSpace]", "\<\"JACKEROO\"\>", 
+   "\[InvisibleSpace]", "\<\" New Tile Counts: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"A\"\>", "\[Rule]", "8"}], ",", 
+     RowBox[{"\<\"B\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"C\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"D\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"E\"\>", "\[Rule]", "7"}], ",", 
+     RowBox[{"\<\"F\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"G\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"H\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"I\"\>", "\[Rule]", "7"}], ",", 
+     RowBox[{"\<\"J\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"K\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"L\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"M\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"N\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"O\"\>", "\[Rule]", "6"}], ",", 
+     RowBox[{"\<\"P\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Q\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"R\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"S\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"T\"\>", "\[Rule]", "6"}], ",", 
+     RowBox[{"\<\"U\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"V\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"W\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"X\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Y\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"Z\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"?\"\>", "\[Rule]", "2"}]}], "\[RightAssociation]"}], 
+   "\[InvisibleSpace]", "\<\"Tiles Left: \"\>", "\[InvisibleSpace]", "77"}],
+  SequenceForm[
+  "Word: ", "JACKEROO", " New Tile Counts: ", <|
+   "A" -> 8, "B" -> 2, "C" -> 1, "D" -> 4, "E" -> 7, "F" -> 2, "G" -> 3, "H" -> 
+    2, "I" -> 7, "J" -> 0, "K" -> 0, "L" -> 4, "M" -> 1, "N" -> 4, "O" -> 6, 
+    "P" -> 1, "Q" -> 1, "R" -> 2, "S" -> 4, "T" -> 6, "U" -> 3, "V" -> 1, "W" -> 
+    2, "X" -> 1, "Y" -> 2, "Z" -> 1, "?" -> 2|>, "Tiles Left: ", 77],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.9320649369112835`*^9, 3.932064991294235*^9, {3.932065022662327*^9, 
+   3.9320650560533314`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[44]:=",ExpressionUUID->"57148e06-391d-8d4a-973c-8e8752049c45"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Word: \"\>", "\[InvisibleSpace]", "\<\"HOARDING\"\>", 
+   "\[InvisibleSpace]", "\<\" New Tile Counts: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"A\"\>", "\[Rule]", "7"}], ",", 
+     RowBox[{"\<\"B\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"C\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"D\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"E\"\>", "\[Rule]", "7"}], ",", 
+     RowBox[{"\<\"F\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"G\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"H\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"I\"\>", "\[Rule]", "6"}], ",", 
+     RowBox[{"\<\"J\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"K\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"L\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"M\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"N\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"O\"\>", "\[Rule]", "5"}], ",", 
+     RowBox[{"\<\"P\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Q\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"R\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"S\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"T\"\>", "\[Rule]", "6"}], ",", 
+     RowBox[{"\<\"U\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"V\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"W\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"X\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Y\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"Z\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"?\"\>", "\[Rule]", "2"}]}], "\[RightAssociation]"}], 
+   "\[InvisibleSpace]", "\<\"Tiles Left: \"\>", "\[InvisibleSpace]", "69"}],
+  SequenceForm[
+  "Word: ", "HOARDING", " New Tile Counts: ", <|
+   "A" -> 7, "B" -> 2, "C" -> 1, "D" -> 3, "E" -> 7, "F" -> 2, "G" -> 2, "H" -> 
+    1, "I" -> 6, "J" -> 0, "K" -> 0, "L" -> 4, "M" -> 1, "N" -> 3, "O" -> 5, 
+    "P" -> 1, "Q" -> 1, "R" -> 1, "S" -> 4, "T" -> 6, "U" -> 3, "V" -> 1, "W" -> 
+    2, "X" -> 1, "Y" -> 2, "Z" -> 1, "?" -> 2|>, "Tiles Left: ", 69],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.9320649369112835`*^9, 3.932064991294235*^9, {3.932065022662327*^9, 
+   3.9320650560633316`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[44]:=",ExpressionUUID->"4403d66e-f808-0141-a3e0-bff67b3652a8"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Word: \"\>", "\[InvisibleSpace]", "\<\"VISUALLY\"\>", 
+   "\[InvisibleSpace]", "\<\" New Tile Counts: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"A\"\>", "\[Rule]", "6"}], ",", 
+     RowBox[{"\<\"B\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"C\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"D\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"E\"\>", "\[Rule]", "7"}], ",", 
+     RowBox[{"\<\"F\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"G\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"H\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"I\"\>", "\[Rule]", "5"}], ",", 
+     RowBox[{"\<\"J\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"K\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"L\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"M\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"N\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"O\"\>", "\[Rule]", "5"}], ",", 
+     RowBox[{"\<\"P\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Q\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"R\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"S\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"T\"\>", "\[Rule]", "6"}], ",", 
+     RowBox[{"\<\"U\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"V\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"W\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"X\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Y\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Z\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"?\"\>", "\[Rule]", "2"}]}], "\[RightAssociation]"}], 
+   "\[InvisibleSpace]", "\<\"Tiles Left: \"\>", "\[InvisibleSpace]", "61"}],
+  SequenceForm[
+  "Word: ", "VISUALLY", " New Tile Counts: ", <|
+   "A" -> 6, "B" -> 2, "C" -> 1, "D" -> 3, "E" -> 7, "F" -> 2, "G" -> 2, "H" -> 
+    1, "I" -> 5, "J" -> 0, "K" -> 0, "L" -> 2, "M" -> 1, "N" -> 3, "O" -> 5, 
+    "P" -> 1, "Q" -> 1, "R" -> 1, "S" -> 3, "T" -> 6, "U" -> 2, "V" -> 0, "W" -> 
+    2, "X" -> 1, "Y" -> 1, "Z" -> 1, "?" -> 2|>, "Tiles Left: ", 61],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.9320649369112835`*^9, 3.932064991294235*^9, {3.932065022662327*^9, 
+   3.93206505606933*^9}},
+ CellLabel->
+  "During evaluation of \
+In[44]:=",ExpressionUUID->"0091f087-f84b-9942-8378-cc6e46ab652e"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Word: \"\>", "\[InvisibleSpace]", "\<\"SUFFRAGE\"\>", 
+   "\[InvisibleSpace]", "\<\" New Tile Counts: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"A\"\>", "\[Rule]", "5"}], ",", 
+     RowBox[{"\<\"B\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"C\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"D\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"E\"\>", "\[Rule]", "6"}], ",", 
+     RowBox[{"\<\"F\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"G\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"H\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"I\"\>", "\[Rule]", "5"}], ",", 
+     RowBox[{"\<\"J\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"K\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"L\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"M\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"N\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"O\"\>", "\[Rule]", "5"}], ",", 
+     RowBox[{"\<\"P\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Q\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"R\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"S\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"T\"\>", "\[Rule]", "6"}], ",", 
+     RowBox[{"\<\"U\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"V\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"W\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"X\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Y\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Z\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"?\"\>", "\[Rule]", "2"}]}], "\[RightAssociation]"}], 
+   "\[InvisibleSpace]", "\<\"Tiles Left: \"\>", "\[InvisibleSpace]", "53"}],
+  SequenceForm[
+  "Word: ", "SUFFRAGE", " New Tile Counts: ", <|
+   "A" -> 5, "B" -> 2, "C" -> 1, "D" -> 3, "E" -> 6, "F" -> 0, "G" -> 1, "H" -> 
+    1, "I" -> 5, "J" -> 0, "K" -> 0, "L" -> 2, "M" -> 1, "N" -> 3, "O" -> 5, 
+    "P" -> 1, "Q" -> 1, "R" -> 0, "S" -> 2, "T" -> 6, "U" -> 1, "V" -> 0, "W" -> 
+    2, "X" -> 1, "Y" -> 1, "Z" -> 1, "?" -> 2|>, "Tiles Left: ", 53],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.9320649369112835`*^9, 3.932064991294235*^9, {3.932065022662327*^9, 
+   3.9320650560743275`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[44]:=",ExpressionUUID->"ee08d552-8854-b844-87cb-ed26e26eed49"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Word: \"\>", "\[InvisibleSpace]", "\<\"TIDESMAN\"\>", 
+   "\[InvisibleSpace]", "\<\" New Tile Counts: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"A\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"B\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"C\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"D\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"E\"\>", "\[Rule]", "5"}], ",", 
+     RowBox[{"\<\"F\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"G\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"H\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"I\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"J\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"K\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"L\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"M\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"N\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"O\"\>", "\[Rule]", "5"}], ",", 
+     RowBox[{"\<\"P\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Q\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"R\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"S\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"T\"\>", "\[Rule]", "5"}], ",", 
+     RowBox[{"\<\"U\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"V\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"W\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"X\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Y\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Z\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"?\"\>", "\[Rule]", "2"}]}], "\[RightAssociation]"}], 
+   "\[InvisibleSpace]", "\<\"Tiles Left: \"\>", "\[InvisibleSpace]", "45"}],
+  SequenceForm[
+  "Word: ", "TIDESMAN", " New Tile Counts: ", <|
+   "A" -> 4, "B" -> 2, "C" -> 1, "D" -> 2, "E" -> 5, "F" -> 0, "G" -> 1, "H" -> 
+    1, "I" -> 4, "J" -> 0, "K" -> 0, "L" -> 2, "M" -> 0, "N" -> 2, "O" -> 5, 
+    "P" -> 1, "Q" -> 1, "R" -> 0, "S" -> 1, "T" -> 5, "U" -> 1, "V" -> 0, "W" -> 
+    2, "X" -> 1, "Y" -> 1, "Z" -> 1, "?" -> 2|>, "Tiles Left: ", 45],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.9320649369112835`*^9, 3.932064991294235*^9, {3.932065022662327*^9, 
+   3.932065056078331*^9}},
+ CellLabel->
+  "During evaluation of \
+In[44]:=",ExpressionUUID->"a19138f1-3b0f-3146-96c7-fc7e6c60f4d0"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Word: \"\>", "\[InvisibleSpace]", "\<\"GEOCODED\"\>", 
+   "\[InvisibleSpace]", "\<\" New Tile Counts: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"A\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"B\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"C\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"D\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"E\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"F\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"G\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"H\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"I\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"J\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"K\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"L\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"M\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"N\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"O\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"P\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Q\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"R\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"S\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"T\"\>", "\[Rule]", "5"}], ",", 
+     RowBox[{"\<\"U\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"V\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"W\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"X\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Y\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Z\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"?\"\>", "\[Rule]", "2"}]}], "\[RightAssociation]"}], 
+   "\[InvisibleSpace]", "\<\"Tiles Left: \"\>", "\[InvisibleSpace]", "37"}],
+  SequenceForm[
+  "Word: ", "GEOCODED", " New Tile Counts: ", <|
+   "A" -> 4, "B" -> 2, "C" -> 0, "D" -> 0, "E" -> 3, "F" -> 0, "G" -> 0, "H" -> 
+    1, "I" -> 4, "J" -> 0, "K" -> 0, "L" -> 2, "M" -> 0, "N" -> 2, "O" -> 3, 
+    "P" -> 1, "Q" -> 1, "R" -> 0, "S" -> 1, "T" -> 5, "U" -> 1, "V" -> 0, "W" -> 
+    2, "X" -> 1, "Y" -> 1, "Z" -> 1, "?" -> 2|>, "Tiles Left: ", 37],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.9320649369112835`*^9, 3.932064991294235*^9, {3.932065022662327*^9, 
+   3.932065056085823*^9}},
+ CellLabel->
+  "During evaluation of \
+In[44]:=",ExpressionUUID->"cfc849a2-d970-634a-be0f-92d8779802bd"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Word: \"\>", "\[InvisibleSpace]", "\<\"BOBWHEEL\"\>", 
+   "\[InvisibleSpace]", "\<\" New Tile Counts: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"A\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"B\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"C\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"D\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"E\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"F\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"G\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"H\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"I\"\>", "\[Rule]", "4"}], ",", 
+     RowBox[{"\<\"J\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"K\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"L\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"M\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"N\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"O\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"P\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Q\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"R\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"S\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"T\"\>", "\[Rule]", "5"}], ",", 
+     RowBox[{"\<\"U\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"V\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"W\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"X\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Y\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Z\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"?\"\>", "\[Rule]", "2"}]}], "\[RightAssociation]"}], 
+   "\[InvisibleSpace]", "\<\"Tiles Left: \"\>", "\[InvisibleSpace]", "29"}],
+  SequenceForm[
+  "Word: ", "BOBWHEEL", " New Tile Counts: ", <|
+   "A" -> 4, "B" -> 0, "C" -> 0, "D" -> 0, "E" -> 1, "F" -> 0, "G" -> 0, "H" -> 
+    0, "I" -> 4, "J" -> 0, "K" -> 0, "L" -> 1, "M" -> 0, "N" -> 2, "O" -> 2, 
+    "P" -> 1, "Q" -> 1, "R" -> 0, "S" -> 1, "T" -> 5, "U" -> 1, "V" -> 0, "W" -> 
+    1, "X" -> 1, "Y" -> 1, "Z" -> 1, "?" -> 2|>, "Tiles Left: ", 29],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.9320649369112835`*^9, 3.932064991294235*^9, {3.932065022662327*^9, 
+   3.932065056090822*^9}},
+ CellLabel->
+  "During evaluation of \
+In[44]:=",ExpressionUUID->"e6af069a-f521-ef4e-b1d0-43c6e3bd0d51"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Word: \"\>", "\[InvisibleSpace]", "\<\"TALIPOTS\"\>", 
+   "\[InvisibleSpace]", "\<\" New Tile Counts: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"A\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"B\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"C\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"D\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"E\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"F\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"G\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"H\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"I\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"J\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"K\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"L\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"M\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"N\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"O\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"P\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"Q\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"R\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"S\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"T\"\>", "\[Rule]", "3"}], ",", 
+     RowBox[{"\<\"U\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"V\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"W\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"X\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Y\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Z\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"?\"\>", "\[Rule]", "2"}]}], "\[RightAssociation]"}], 
+   "\[InvisibleSpace]", "\<\"Tiles Left: \"\>", "\[InvisibleSpace]", "21"}],
+  SequenceForm[
+  "Word: ", "TALIPOTS", " New Tile Counts: ", <|
+   "A" -> 3, "B" -> 0, "C" -> 0, "D" -> 0, "E" -> 1, "F" -> 0, "G" -> 0, "H" -> 
+    0, "I" -> 3, "J" -> 0, "K" -> 0, "L" -> 0, "M" -> 0, "N" -> 2, "O" -> 1, 
+    "P" -> 0, "Q" -> 1, "R" -> 0, "S" -> 0, "T" -> 3, "U" -> 1, "V" -> 0, "W" -> 
+    1, "X" -> 1, "Y" -> 1, "Z" -> 1, "?" -> 2|>, "Tiles Left: ", 21],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.9320649369112835`*^9, 3.932064991294235*^9, {3.932065022662327*^9, 
+   3.93206505609482*^9}},
+ CellLabel->
+  "During evaluation of \
+In[44]:=",ExpressionUUID->"1750e86f-d990-224d-8ee6-93562bcf1952"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Word: \"\>", "\[InvisibleSpace]", "\<\"NUTATION\"\>", 
+   "\[InvisibleSpace]", "\<\" New Tile Counts: \"\>", "\[InvisibleSpace]", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"A\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"B\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"C\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"D\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"E\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"F\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"G\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"H\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"I\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"J\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"K\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"L\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"M\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"N\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"O\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"P\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"Q\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"R\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"S\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"T\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"U\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"V\"\>", "\[Rule]", "0"}], ",", 
+     RowBox[{"\<\"W\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"X\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Y\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"Z\"\>", "\[Rule]", "1"}], ",", 
+     RowBox[{"\<\"?\"\>", "\[Rule]", "2"}]}], "\[RightAssociation]"}], 
+   "\[InvisibleSpace]", "\<\"Tiles Left: \"\>", "\[InvisibleSpace]", "13"}],
+  SequenceForm[
+  "Word: ", "NUTATION", " New Tile Counts: ", <|
+   "A" -> 2, "B" -> 0, "C" -> 0, "D" -> 0, "E" -> 1, "F" -> 0, "G" -> 0, "H" -> 
+    0, "I" -> 2, "J" -> 0, "K" -> 0, "L" -> 0, "M" -> 0, "N" -> 0, "O" -> 0, 
+    "P" -> 0, "Q" -> 1, "R" -> 0, "S" -> 0, "T" -> 1, "U" -> 0, "V" -> 0, "W" -> 
+    1, "X" -> 1, "Y" -> 1, "Z" -> 1, "?" -> 2|>, "Tiles Left: ", 13],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.9320649369112835`*^9, 3.932064991294235*^9, {3.932065022662327*^9, 
+   3.932065056180504*^9}},
+ CellLabel->
+  "During evaluation of \
+In[44]:=",ExpressionUUID->"5113d187-1d84-f04a-ba77-5c7feb426d43"]
+}, Open  ]]
+}, Open  ]]
 },
-WindowSize->{571.8, 545.4},
-WindowMargins->{{284.4, Automatic}, {Automatic, 47.4}},
+WindowSize->{815.4, 545.4},
+WindowMargins->{{108.6, Automatic}, {Automatic, 23.4}},
 FrontEndVersion->"14.0 for Microsoft Windows (64-bit) (December 12, 2023)",
-StyleDefinitions->"Default.nb",
+StyleDefinitions->"Chatbook.nb",
 ExpressionUUID->"be4b02fa-faee-6240-9e2f-f72ed13833b7"
 ]
 (* End of Notebook Content *)
@@ -36,9 +706,28 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
+Cell[558, 20, 391, 8, 48, "Input",ExpressionUUID->"9da189ad-9ac8-e540-b302-106408bb5374"],
+Cell[952, 30, 611, 14, 67, "Input",ExpressionUUID->"548b57a5-237a-cf45-a6cc-0229dd320acc"],
+Cell[1566, 46, 1869, 47, 162, "Input",ExpressionUUID->"d014fea4-5e74-df42-a054-3d48177ca32b"],
+Cell[CellGroupData[{
+Cell[3460, 97, 2756, 61, 276, "Input",ExpressionUUID->"ebd6d19e-d987-3641-8daa-913fb61651cf"],
+Cell[6219, 160, 244, 4, 32, "Output",ExpressionUUID->"1901ed0f-b9c1-2344-a2cd-45b817c256c2"],
+Cell[6466, 166, 1587, 33, 52, "Output",ExpressionUUID->"50b059f7-aefe-0944-8ee1-b87bdbb0cf21"],
+Cell[8056, 201, 231, 4, 32, "Output",ExpressionUUID->"5b1c18fb-9cf0-9c4c-ba0d-874a0c00dff1"],
+Cell[CellGroupData[{
+Cell[8312, 209, 2305, 46, 40, "Print",ExpressionUUID->"a3427f6d-e696-8b48-8629-e83229417691"],
+Cell[10620, 257, 2307, 46, 40, "Print",ExpressionUUID->"57148e06-391d-8d4a-973c-8e8752049c45"],
+Cell[12930, 305, 2307, 46, 40, "Print",ExpressionUUID->"4403d66e-f808-0141-a3e0-bff67b3652a8"],
+Cell[15240, 353, 2304, 46, 40, "Print",ExpressionUUID->"0091f087-f84b-9942-8378-cc6e46ab652e"],
+Cell[17547, 401, 2307, 46, 40, "Print",ExpressionUUID->"ee08d552-8854-b844-87cb-ed26e26eed49"],
+Cell[19857, 449, 2305, 46, 40, "Print",ExpressionUUID->"a19138f1-3b0f-3146-96c7-fc7e6c60f4d0"],
+Cell[22165, 497, 2305, 46, 40, "Print",ExpressionUUID->"cfc849a2-d970-634a-be0f-92d8779802bd"],
+Cell[24473, 545, 2305, 46, 40, "Print",ExpressionUUID->"e6af069a-f521-ef4e-b1d0-43c6e3bd0d51"],
+Cell[26781, 593, 2304, 46, 40, "Print",ExpressionUUID->"1750e86f-d990-224d-8ee6-93562bcf1952"],
+Cell[29088, 641, 2305, 46, 40, "Print",ExpressionUUID->"5113d187-1d84-f04a-ba77-5c7feb426d43"]
+}, Open  ]]
+}, Open  ]]
 }
 ]
 *)
-
-(* End of internal cache information *)
 

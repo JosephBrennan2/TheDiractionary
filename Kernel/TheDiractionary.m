@@ -3,6 +3,7 @@ SetDirectory[ParentDirectory @ DirectoryName @ $InputFileName];
 Get[#]& /@ {
     "TheDiractionary`ScrabbleScore`",
     "TheDiractionary`ScrabbleHelper`",
-    "TheDiractionary`Version1`"
+    "TheDiractionary`Scrabble-gorithm`",
+    "TheDiractionary`ScrabbleBoard`"
   (* .m File Names. *)
 };

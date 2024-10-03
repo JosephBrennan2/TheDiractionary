@@ -3,6 +3,8 @@ updateUsedCount;
 reduceRemainingCount;
 RunVersion1Scrabblegorithm;
 RunVersion2Scrabblegorithm;
+createInitialScrabbleBoard;
+updateScrabbleBoard;
 
 Begin["`Private`"]
 
@@ -167,6 +169,68 @@ RunVersion2Scrabblegorithm[iterations_] :=
    		{j, 1, iterations}
    		]
   	]
+
+createInitialScrabbleBoard[] := 
+Module[
+    {board, colors},
+    board = {{"TW", "SL", "SL", "DL", "SL", "SL", "SL", "TW", "SL", 
+     "SL", "SL", "DL", "SL", "SL", "TW"}, {"SL", "DW", "SL", "SL", 
+     "SL", "TL", "SL", "SL", "SL", "TL", "SL", "SL", "SL", "DW", 
+     "SL"}, {"SL", "SL", "DW", "SL", "SL", "SL", "DL", "SL", "DL", 
+     "SL", "SL", "SL", "DW", "SL", "SL"}, {"DL", "SL", "SL", "DW", 
+     "SL", "SL", "SL", "DL", "SL", "SL", "SL", "DW", "SL", "SL", 
+     "DL"}, {"SL", "SL", "SL", "SL", "DW", "SL", "SL", "SL", "SL", 
+     "SL", "DW", "SL", "SL", "SL", "SL"}, {"SL", "TL", "SL", "SL", 
+     "SL", "TL", "SL", "SL", "SL", "TL", "SL", "SL", "SL", "TL", 
+     "SL"}, {"SL", "SL", "DL", "SL", "SL", "SL", "DL", "SL", "DL", 
+     "SL", "SL", "SL", "DL", "SL", "SL"}, {"TW", "SL", "SL", "DL", 
+     "SL", "SL", "SL", "DW", "SL", "SL", "SL", "DL", "SL", "SL", 
+     "TW"}, {"SL", "SL", "DL", "SL", "SL", "SL", "DL", "SL", "DL", 
+     "SL", "SL", "SL", "DL", "SL", "SL"}, {"SL", "TL", "SL", "SL", 
+     "SL", "TL", "SL", "SL", "SL", "TL", "SL", "SL", "SL", "TL", 
+     "SL"}, {"SL", "SL", "SL", "SL", "DW", "SL", "SL", "SL", "SL", 
+     "SL", "DW", "SL", "SL", "SL", "SL"}, {"DL", "SL", "SL", "DW", 
+     "SL", "SL", "SL", "DL", "SL", "SL", "SL", "DW", "SL", "SL", 
+     "DL"}, {"SL", "SL", "DW", "SL", "SL", "SL", "DL", "SL", "DL", 
+     "SL", "SL", "SL", "DW", "SL", "SL"}, {"SL", "DW", "SL", "SL", 
+     "SL", "TL", "SL", "SL", "SL", "TL", "SL", "SL", "SL", "DW", 
+     "SL"}, {"TW", "SL", "SL", "DL", "SL", "SL", "SL", "TW", "SL", 
+     "SL", "SL", "DL", "SL", "SL", "TW"}};
+    colors = {
+        "TW" -> Red, "SL" -> Darker[Green], "DL" -> Cyan,
+        "TL" -> Blue, "DW" -> Orange
+      };
+    ArrayPlot[board, ColorRules -> colors, Mesh -> True, 
+   MeshStyle -> Black]
+  ]
+
+updateScrabbleBoard[word_, pos_, direction_ : ("\[RightArrow]" | "\[DownArrow]"), epilogState_] :=
+   Module[{x, y, dx, dy, length, epilog},
+      length = StringLength[word];
+      x = (ToExpression[StringTake[pos, 2 ;;]] - 1);
+      y = 15 - (LetterNumber[StringTake[pos, 1]] - 1);
+      If[direction === "\[RightArrow]",
+   epilog = Table[
+           {
+              {LightYellow, EdgeForm[Thin], 
+       Rectangle[{x + (i - 1), y}, {x + i, y - 1}]},
+              Text[Style[Characters[word][[i]], 20],
+                {x + (i - 0.5), y - 0.5}]
+            },
+           {i, length}
+         ],
+   epilog = Table[
+           {
+              {LightYellow, EdgeForm[Thin], 
+       Rectangle[{x, y - (i - 1)}, {x + 1, y - i}]},
+              Text[Style[Characters[word][[i]], 20],
+                {x + 0.5, y - (i - 0.5)}]
+            },
+           {i, length}
+         ]
+   ];
+      Join[epilog, epilogState]
+    ]
 End[]
 
 EndPackage[]

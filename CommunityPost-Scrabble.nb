@@ -1,0 +1,128 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      4494,        118]
+NotebookOptionsPosition[      3442,         95]
+NotebookOutlinePosition[      3864,        111]
+CellTagsIndexPosition[      3821,        108]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[TextData[StyleBox["Wolfram Community Post: Generating the Perfect \
+Scrabble Game",
+ FontFamily->"Source Serif Pro",
+ FontWeight->"Normal",
+ FontTracking->"Plain"]], "Title",
+ CellChangeTimes->{{3.9392675291638184`*^9, 
+  3.9392675469749928`*^9}},ExpressionUUID->"7a3282f2-fdeb-2141-8a6b-\
+b793f77a2a1c"],
+
+Cell["Plan", "Subtitle",
+ CellChangeTimes->{{3.9392675527300987`*^9, 
+  3.9392675546523514`*^9}},ExpressionUUID->"d0fa0bc0-a02a-bb4e-bb4a-\
+08c62cb363f7"],
+
+Cell["\<\
+Inspired by a video uploaded in December 2023 \
+https://www.youtube.com/watch?v=eIyW_1l_qN4\
+\>", "Item",
+ CellChangeTimes->{
+  3.939267584934164*^9, {3.9392676345879154`*^9, 
+   3.939267668630596*^9}},ExpressionUUID->"7423f546-b640-2c40-b350-\
+08eb7ec35cbf"],
+
+Cell["Describe the problem I am trying to solve.", "Item",
+ CellChangeTimes->{
+  3.939267584934164*^9, {3.9392676345879154`*^9, 
+   3.93926768885602*^9}},ExpressionUUID->"a7fbab97-7872-004c-84d0-\
+e07e0631af85"],
+
+Cell["\<\
+Version 1: 14 x 7 letter words that span the set. Visualize disconnected 7s \
+on a board with a real word list.\
+\>", "Item",
+ CellChangeTimes->{
+  3.939267584934164*^9, {3.9392676345879154`*^9, 3.939267709658455*^9}, {
+   3.9392677893266983`*^9, 3.939267804608227*^9}, {3.939267851240383*^9, 
+   3.9392678586931534`*^9}},ExpressionUUID->"41831567-6078-d348-a4c3-\
+dac1c1661620"],
+
+Cell["\<\
+Version 2: 1 x 7, 13 x 8 letter words that span the set, with 13 overlaps. \
+Visualize a real word list on a \[Infinity] x \[Infinity] board to show that \
+the board was not taken into account.\
+\>", "Item",
+ CellChangeTimes->{
+  3.939267584934164*^9, {3.9392676345879154`*^9, 3.939267709658455*^9}, {
+   3.9392677893266983`*^9, 3.9392678232595882`*^9}, {3.939267863737892*^9, 
+   3.939267931848364*^9}},ExpressionUUID->"a3797184-ca63-a34d-91a8-\
+f6b487d5f142"],
+
+Cell["\<\
+Version 3: 1 x 7, 13 x 8 letter words that span the set, with 13 overlaps, \
+and stands as a valid game.\[LineSeparator]Check that the problem is actually \
+solvable - visualize on board with no letters \
+present.\[LineSeparator]Visualize the end product. Show an interactive \
+manipulate where the position is chosen.\
+\>", "Item",
+ CellChangeTimes->{
+  3.939267584934164*^9, {3.9392676345879154`*^9, 3.939267709658455*^9}, {
+   3.9392677893266983`*^9, 3.9392678232595882`*^9}, {3.939267863737892*^9, 
+   3.9392680400838165`*^9}, {3.9392680850247173`*^9, 
+   3.9392681341686497`*^9}},ExpressionUUID->"015b2947-92f9-0e4f-bf14-\
+5e89a1495561"],
+
+Cell["Discuss how Wolfram Language made this a breeze.", "Item",
+ CellChangeTimes->{
+  3.939267584934164*^9, {3.9392676345879154`*^9, 3.939267709658455*^9}, {
+   3.9392677893266983`*^9, 3.9392678232595882`*^9}, {3.939267863737892*^9, 
+   3.9392680400838165`*^9}, {3.9392680850247173`*^9, 
+   3.9392681464357357`*^9}},ExpressionUUID->"f29738aa-fa96-4641-951f-\
+a1210ec800c8"]
+}, Open  ]]
+},
+WindowSize->{570.6, 610.8},
+WindowMargins->{{-960, Automatic}, {-202.79999999999995`, Automatic}},
+FrontEndVersion->"14.1 for Microsoft Windows (64-bit) (July 16, 2024)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"67bb5375-e395-2647-bc36-789c91df17c3"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 309, 7, 217, "Title",ExpressionUUID->"7a3282f2-fdeb-2141-8a6b-b793f77a2a1c"],
+Cell[888, 31, 154, 3, 52, "Subtitle",ExpressionUUID->"d0fa0bc0-a02a-bb4e-bb4a-08c62cb363f7"],
+Cell[1045, 36, 269, 7, 50, "Item",ExpressionUUID->"7423f546-b640-2c40-b350-08eb7ec35cbf"],
+Cell[1317, 45, 211, 4, 30, "Item",ExpressionUUID->"a7fbab97-7872-004c-84d0-e07e0631af85"],
+Cell[1531, 51, 389, 8, 50, "Item",ExpressionUUID->"41831567-6078-d348-a4c3-dac1c1661620"],
+Cell[1923, 61, 471, 9, 70, "Item",ExpressionUUID->"a3797184-ca63-a34d-91a8-f6b487d5f142"],
+Cell[2397, 72, 652, 12, 130, "Item",ExpressionUUID->"015b2947-92f9-0e4f-bf14-5e89a1495561"],
+Cell[3052, 86, 374, 6, 30, "Item",ExpressionUUID->"f29738aa-fa96-4641-951f-a1210ec800c8"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+

@@ -1,6 +1,6 @@
 BeginPackage["TheDiractionary`Version1`", {"TheDiractionary`ScrabbleScore`"}];
 UpdateUsedTileCount;
-ReduceRemainingTileCount;
+UpdateRemainingTileCount;
 RunVersion1Scrabblegorithm;
 RunVersion2Scrabblegorithm;
 CreateInitialScrabbleBoard;
@@ -19,7 +19,7 @@ UpdateUsedTileCount[usedCounts_, word_] :=
   Merge[{usedCounts, charCounts}, Total]
   ]
 
-ReduceRemainingTileCount[remainingCounts_, word_, blanks_] :=
+UpdateRemainingTileCount[remainingCounts_, word_, blanks_] :=
  	Module[{tiles = Characters[word], charCounts, newCounts, blanksNeeded},
   	    charCounts = Counts[Characters[word]];
   	    newCounts = Merge[{remainingCounts, Map[(# -> (remainingCounts[#] - charCounts[#])) &, tiles]}, Last];
@@ -52,7 +52,7 @@ RunVersion1Scrabblegorithm[iterations_] :=
      word = wordsByLength[7][[i]];
      If[Length[bingos] < 12, b = 0, b = 1];
      newRemainingCounts = 
-      ReduceRemainingTileCount[remainingCounts, word, b];
+      UpdateRemainingTileCount[remainingCounts, word, b];
      If[newRemainingCounts === remainingCounts, i++, 
       negativeKeys = 
        Select[Keys[newRemainingCounts], newRemainingCounts[#] < 0 &];
@@ -95,7 +95,7 @@ RunVersion2Scrabblegorithm[iterations_] :=
    		i = 1;
    			(* Select Starting Word. *)
    			word = RandomChoice[wordsByLength[7]];
-   			remainingCounts = ReduceRemainingTileCount[remainingCounts, word, 0]
+   			remainingCounts = UpdateRemainingTileCount[remainingCounts, word, 0]
    			(* If Starting Word requires blanks, skip to next iteration. *);
    			If[remainingCounts === tiles[[All, "Quantity"]],
     				Print[word];
@@ -105,23 +105,13 @@ RunVersion2Scrabblegorithm[iterations_] :=
    			usedCounts = UpdateUsedTileCount[usedCounts, word];
    			AppendTo[bingos, word];
    			Print["Bingos: ", bingos];
-   			Print["Tiles Left: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]], 
-    " ", StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]]];
-   			Print["Tiles Used: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]], " ", 
-    StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]]];
-
-    
+   			Print["Tiles Left: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]], " ", StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]]];
+   			Print["Tiles Used: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]], " ", StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]]];
    			(* Main loop *)
    			While[i <= Length[wordsByLength[8]],
     				word = wordsByLength[8][[i]];
-    				If[KeyExistsQ[usedWords, word],
-     					i++;
-     					Continue[];
-     				];
-    				If[Length[bingos] < 12,
-     					b = 0,
-     					b = 1
-     				];
+    				If[KeyExistsQ[usedWords, word], i++; Continue[]];
+    				If[Length[bingos] < 12,	b = 0, b = 1];
     				overlapOptions = Intersection[Characters[word], Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]];
     				If[overlapOptions === {},
      					Print[word, " Has No Overlaps!"];
@@ -129,7 +119,7 @@ RunVersion2Scrabblegorithm[iterations_] :=
      					 Continue[];
      				];
     				overlapTile = RandomChoice[overlapOptions];
-    				newRemainingCounts = ReduceRemainingTileCount[remainingCounts, StringJoin[DeleteElements[Characters[word], 1 -> {overlapTile}]], b];
+    				newRemainingCounts = UpdateRemainingTileCount[remainingCounts, StringJoin[DeleteElements[Characters[word], 1 -> {overlapTile}]], b];
     				If[newRemainingCounts === remainingCounts,
      					i++,
               blankTileList = Select[Keys[newRemainingCounts], newRemainingCounts[#] < 0 &];
@@ -171,6 +161,7 @@ RunVersion2Scrabblegorithm[iterations_] :=
   	]
   (* Unsure about blankTileList. It exists because it leaves room for there being one blank or zero. *)
 
+(* Create Graphic of an Empty Scrabble Board. *)
 CreateInitialScrabbleBoard[] := 
 Module[
     {board, colors},
@@ -205,6 +196,7 @@ Module[
    MeshStyle -> Black]
   ]
 
+(* Create the Epilog of a 'word' played in a position 'pos' in the following 'direction'. *)
 UpdateScrabbleBoard[word_, pos_List, direction_String : ("Right" | "Down"), epilogState_] :=
    Module[{x, y, length, epilog},
       length = StringLength[word];
@@ -276,19 +268,19 @@ FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
                           {ToUpperCase[FromLetterNumber[boardRow - workBackToStartNewWord]],
                           boardColumn + overlapTileWithinPlayedWord}
                                   ],
-                              FreeQ[avoidCols, #[[2]]] && LetterNumber[#[[1]]] < 8 & (* Condition for playing Down. *)
+                              FreeQ[avoidCols, #[[2]]] && LetterNumber[#[[1]]] <= 8 & (* Condition for playing Down. *)
                               ];
         
-          If[positionListDown =!= {} , AppendTo[overlapAssoc["Down"], overlapTileOptions[[j]] -> positionListDown]], (* Do not include empty lists. *)
+          If[positionListDown =!= {}, AppendTo[overlapAssoc["Down"], overlapTileOptions[[j]] -> positionListDown]], (* Do not include empty lists. *)
         
         (* Else, Play "Right" through this word. *)
-        avoidRows = Values[Select[assoc, #["Direction"] == "Right" &][[All, "Position"]]][[All, 1]];
+        avoidRows = Values[Select[assoc, #["Direction"] == "Right" &][[All, "Position"]]][[All, 1]]; (* Do not play "Right" through existing "Right" plays. *)
         positionListRight = Select[
                       PositionReformat[
                             {ToUpperCase[FromLetterNumber[boardRow + overlapTileWithinPlayedWord]],
                           boardColumn - workBackToStartNewWord}
                                     ],
-                            FreeQ[avoidRows, #[[1]]] && #[[2]] > 0 & (* Condition for playing Right. *)
+                            FreeQ[avoidRows, #[[1]]] && #[[2]] > 0 && #[[2]] <= 8 & (* Condition for playing Right. *)
                                 ]; 
         
           If[positionListRight =!= {}, AppendTo[overlapAssoc["Right"], overlapTileOptions[[j]] -> positionListRight]]

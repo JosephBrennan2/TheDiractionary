@@ -136,10 +136,8 @@ RunVersion2Scrabblegorithm[iterations_] :=
               usedCounts = UpdateUsedTileCount[usedCounts, StringJoin[DeleteElements[Characters[word], 1 -> charsToDelete]]];
      					remainingCounts = newRemainingCounts;
      					Print[bingos];
-     				  Print["Tiles Left: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]], " ", 
-     StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]]];
-     					Print["Tiles Used: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]], " ", 
-      StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]]];
+     				  Print["Tiles Left: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]], " ", StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]]];
+     					Print["Tiles Used: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]], " ", StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]]];
      		      usedWords[word] = True;(* Mark the word as used *)
      					If[Length[bingos] == 14,
       						Print["Success!"];
@@ -245,50 +243,45 @@ PositionReformat[{rows_, columns_}] := Flatten[Outer[List, rows, columns], 1]
    and returns an association in the form:
    <| "Down" -> <| "OverlapTileOption" -> {pos1, pos2, ...} |>, "Right" -> ... |>
 *)
-FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] := 
+FindPossibleOverlapPositions[assoc_, word_, 
+  overlapTileOptions_List] :=
  Module[{overlapAssoc = <|"Down" -> <||>, "Right" -> <||>|>},
-  Do[
-   Do[
-    Module[
-     {direction = Values[assoc][[All, "Direction"]][[i]], (* Find direction of word to be "played through". *)
-      boardRow = LetterNumber[Values[assoc][[All, "Position"]][[i]][[1]]], (* Find row of word to be "played through". *)
-      boardColumn = Values[assoc][[All, "Position"]][[i]][[2]], (* Find column of word to be "played through". *)
-      avoidRows,
-      avoidCols,
-      positionListDown,
-      positionListRight,
-      overlapTileWithinPlayedWord = (StringPosition[Values[assoc][[All, "Bingo"]][[i]], overlapTileOptions[[j]]][[All, 1]] - 1), (* Find position(s) within played word where the overlap tile exists. *)
-      workBackToStartNewWord = (StringPosition[word, overlapTileOptions[[j]]][[All, 1]] - 1) (* Find position(s) within new word where the overlap tile exists. *)
-      },
-      If[
-        direction == "Right", (* Play "Down" through this word. *)
-        avoidCols = Values[Select[assoc, #["Direction"] == "Down" &][[All, "Position"]]][[All, 2]]; (* Do not play "Down" through existing "Down" plays. *)
-        positionListDown = Select[
-                    PositionReformat[
-                          {ToUpperCase[FromLetterNumber[boardRow - workBackToStartNewWord]],
-                          boardColumn + overlapTileWithinPlayedWord}
-                                  ],
-                              FreeQ[avoidCols, #[[2]]] && LetterNumber[#[[1]]] <= 8 & (* Condition for playing Down. *)
-                              ];
-        
-          If[positionListDown =!= {}, AppendTo[overlapAssoc["Down"], overlapTileOptions[[j]] -> positionListDown]], (* Do not include empty lists. *)
-        
-        (* Else, Play "Right" through this word. *)
-        avoidRows = Values[Select[assoc, #["Direction"] == "Right" &][[All, "Position"]]][[All, 1]]; (* Do not play "Right" through existing "Right" plays. *)
-        positionListRight = Select[
-                      PositionReformat[
-                            {ToUpperCase[FromLetterNumber[boardRow + overlapTileWithinPlayedWord]],
-                          boardColumn - workBackToStartNewWord}
-                                    ],
-                            FreeQ[avoidRows, #[[1]]] && #[[2]] > 0 && #[[2]] <= 8 & (* Condition for playing Right. *)
-                                ]; 
-        
-          If[positionListRight =!= {}, AppendTo[overlapAssoc["Right"], overlapTileOptions[[j]] -> positionListRight]]
-        ]
-     ],
-    {i, Length[assoc]}],
-   {j, Length[overlapTileOptions]}];
-  Select[overlapAssoc, # =!= <||> &] (* After turn 1, the "Down" association is empty. *)
+    Do[
+      Do[
+        Module[{direction = Values[assoc][[All, "Direction"]][[i]], 
+              boardRow = LetterNumber[Values[assoc][[All, "Position"]][[i]][[1]]],
+              boardColumn = Values[assoc][[All, "Position"]][[i]][[2]],
+              avoidRows, avoidCols, positionListDown, 
+              positionListRight, 
+              overlapTileWithinPlayedWord = (StringPosition[Values[assoc][[All, "Bingo"]][[i]], overlapTileOptions[[j]]][[All, 1]] - 1),
+              workBackToStartNewWord = (StringPosition[word, overlapTileOptions[[j]]][[All, 1]] - 1)},
+              (*Play "Down" through this word.*)
+              If[direction == "Right",
+                avoidCols = Values[Select[assoc, #["Direction"] == "Down" &][[All, "Position"]]][[All, 2]];
+                positionListDown = Select[PositionReformat[{ToUpperCase[FromLetterNumber[boardRow - workBackToStartNewWord]], boardColumn + overlapTileWithinPlayedWord}], 
+                                      FreeQ[avoidCols, #[[2]]] && LetterNumber[#[[1]]] <= 8 && LetterNumber[#[[1]]] >= 1 &];
+                If[positionListDown =!= {},
+                  If[KeyExistsQ[overlapAssoc["Down"], overlapTileOptions[[j]]], 
+                    overlapAssoc["Down", overlapTileOptions[[j]]] = Flatten[Map[Append[overlapAssoc["Down", overlapTileOptions[[j]]], #]&, positionListDown], 1],
+                    overlapAssoc["Down", overlapTileOptions[[j]]] = positionListDown
+                    ]
+                  ],
+                (*Else, Play "Right" through this word.*)
+                avoidRows = Values[Select[assoc, #["Direction"] == "Right" &][[All, "Position"]]][[All, 1]];
+                positionListRight = Select[PositionReformat[{ToUpperCase[FromLetterNumber[boardRow + overlapTileWithinPlayedWord]], boardColumn - workBackToStartNewWord}], 
+                                      FreeQ[avoidRows, #[[1]]] && #[[2]] > 0 && #[[2]] <= 8 &];
+                If[positionListRight =!= {},
+                  If[KeyExistsQ[overlapAssoc["Right"], overlapTileOptions[[j]]], 
+                    overlapAssoc["Right", overlapTileOptions[[j]]] = Flatten[Map[Append[overlapAssoc["Right", overlapTileOptions[[j]]], #]&, positionListRight], 1],
+                    overlapAssoc["Right", overlapTileOptions[[j]]] = positionListRight]
+                  ]
+                ]
+              ], 
+          {i, Length[assoc]}
+        ], 
+        {j, Length[overlapTileOptions]}
+      ];
+    Select[overlapAssoc, # =!= <||> &]
   ]
 
 FindPossibleOverlapEpilogs[word_, overlapPositions_, epilogState_] :=

@@ -2,14 +2,17 @@ BeginPackage["TheDiractionary`Version1`", {"TheDiractionary`ScrabbleScore`"}];
 UpdateUsedTileCount;
 UpdateRemainingTileCount;
 RunVersion1Scrabblegorithm;
+VisualizeVersion1;
 RunVersion2Scrabblegorithm;
 CreateInitialScrabbleBoard;
 CheckForBlanksUsed;
 UpdateScrabbleBoard;
-PositionReformat;
+AdjacentChannels;
+FindStartingSquares;
 FindPossibleOverlapPositions;
 FindPossibleOverlapEpilogs;
 
+(*https://www.reddit.com/r/scrabble/comments/my5tie/the_419_words_erased_from_csw/*)
 
 Begin["`Private`"]
 
@@ -33,54 +36,96 @@ UpdateRemainingTileCount[remainingCounts_, word_, blanks_] :=
    	]
   ]
 
+CheckForBlanksUsed[newRemainingCounts_, remainingCounts_, assoc_] := 
+ Module[
+  {
+   negativeKeys = 
+    Select[Keys[newRemainingCounts], newRemainingCounts[#] < 0 &],
+   blanksUsed,
+   index = Length[assoc] + 1
+   },
+  blanksUsed = If[negativeKeys == {}, 0, First[negativeKeys]];
+  AppendTo[assoc, index -> <|"Blank" -> blanksUsed|>];
+  newRemainingCounts[blanksUsed] = 0
+  ]
+
+
 RunVersion1Scrabblegorithm[iterations_] := 
   Module[{j = 1, dict, wordsByLength, remainingCounts, bingos, blanks,
      b, word, newRemainingCounts, negativeKeys, i},
    Do[
-    Print["\n ...\n ...\n ..."];
+    (*Print["\n ...\n ...\n ..."];*)
     Print[StringJoin["Attempt ", ToString[j]]];
     j++;
-    (*Initialize variables*)
+    (* Initialize variables. *)
     dict = RandomSample[Import["CSW21.txt", "List"]];
     wordsByLength = GroupBy[dict, StringLength];
     remainingCounts = tiles[[All, "Quantity"]];
     bingos = {};
     blanks = {};
     i = 1;
-    (*Main loop.*)
+    (* Main loop. *)
     While[i <= Length[wordsByLength[7]], 
      word = wordsByLength[7][[i]];
      If[Length[bingos] < 12, b = 0, b = 1];
-     newRemainingCounts = 
-      UpdateRemainingTileCount[remainingCounts, word, b];
-     If[newRemainingCounts === remainingCounts, i++, 
-      negativeKeys = 
-       Select[Keys[newRemainingCounts], newRemainingCounts[#] < 0 &];
-      If[negativeKeys =!= {}, AppendTo[blanks, negativeKeys[[1]]];
-       newRemainingCounts[negativeKeys[[1]]] = 0;];
+     newRemainingCounts = UpdateRemainingTileCount[remainingCounts, word, b];
+     If[newRemainingCounts === remainingCounts, If[i==Length[wordsByLength[7]],Print["No Valid Words"]]; i++, 
+      negativeKeys = Select[Keys[newRemainingCounts], newRemainingCounts[#] < 0 &];
+      If[negativeKeys =!= {}, AppendTo[blanks, negativeKeys[[1]]]; newRemainingCounts[negativeKeys[[1]]] = 0;];
       AppendTo[bingos, word];
       remainingCounts = newRemainingCounts;
-      Print[bingos];
-      Print["Tiles Left: ", 
-       Length[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]],
-        " ", StringJoin[
-        Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]]];
+      Print["Bingos Found: ", bingos];
+      Print["Tiles Left: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]], " ", StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]]];
       If[Length[bingos] == 14, Print["Success!"];
        CloudPut[
-        Append[CloudGet["V.1-WordMaster"], <|"Bingos" -> bingos, 
+        Append[CloudGet["V.1-WordMaster"], 
+          <|"Bingos" -> bingos, 
           "Blanks" -> blanks, 
-          "Tiles Remaining" -> 
-           Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]|>], 
-        "V.1-WordMaster"]];
-      If[Length[bingos] == 12, i = 1, i++]];], {iterations}]];
+          "Tiles Remaining" -> Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]
+          |>
+          ], 
+        "V.1-WordMaster"]
+        ];
+      If[Length[bingos] == 12, i = 1, i++]
+      ];
+    ], {iterations}
+  ]
+];
+
+VisualizeVersion1[game_] :=
+ Module[
+  {epilog, board = CreateInitialScrabbleBoard[], bingos = game["Bingos"], blanks = game["Blanks"], leftover = game["Tiles Remaining"]},
+  (* Place Bingos on board. *)
+    epilog = Fold[
+        Module[{col, row},
+            row = If[#2 <= 7, ToUpperCase[FromLetterNumber[2 #2 - 1]], ToUpperCase[FromLetterNumber[2 (#2 - 7)]]];
+            col = If[#2 <= 7, 1, 9];
+            UpdateScrabbleBoard[bingos[[#2]], {row, col}, "Right", #]
+            ] &, {}, Range[Length[bingos]]
+                ];
+   (* Replace letters with blanks. *)
+    epilog = Module[
+      {rEpilog = Reverse[Partition[epilog, 7]], finalTurns},
+        finalTurns = {rEpilog[[-2]][[All, 2]][[All, 1]], rEpilog[[-1]][[All, 2]][[All, 1]]};
+        rEpilog[[-2, All, 2, 1]] = ReplacePart[finalTurns[[1]], RandomChoice[Position[finalTurns[[1]], blanks[[1]]]] -> "?"];
+        rEpilog[[-1, All, 2, 1]] = ReplacePart[finalTurns[[2]], RandomChoice[Position[finalTurns[[2]], blanks[[2]]]] -> "?"];
+        rEpilog
+        ];
+  (* Place leftover tiles in corner. *)
+    epilog = Fold[
+        UpdateScrabbleBoard[leftover[[#2]], {"O", #2}, "Right", #] &, epilog, Range[2]
+                ];
+    
+    Show[board, ImageSize -> 400, Epilog -> epilog]
+    ]
 
 RunVersion2Scrabblegorithm[iterations_] :=
  Module[
     {j, dict, wordsByLength, remainingCounts, usedCounts, bingos, blanks, overlaps, blankTileList, usedWords, i,
    word, b, overlapOptions, overlapTile, newRemainingCounts, charsToDelete},
   	Do[
-   		Print["\n ...\n ...\n ..."];
-   		Print[StringJoin["Attempt ", ToString[j]]];
+   		(*Print["\n ...\n ...\n ..."];*)
+   		(*Print[StringJoin["Attempt ", ToString[j]]];*)
    		j++;
    		(* Initialize Variables. *)
    		dict = RandomSample[Import["CSW21.txt", "List"]];
@@ -135,7 +180,7 @@ RunVersion2Scrabblegorithm[iterations_] :=
      					charsToDelete = Join[{overlapTile}, blankTileList];
               usedCounts = UpdateUsedTileCount[usedCounts, StringJoin[DeleteElements[Characters[word], 1 -> charsToDelete]]];
      					remainingCounts = newRemainingCounts;
-     					Print[bingos];
+     					Print["Bingos: ",bingos];
      				  Print["Tiles Left: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]], " ", StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]]];
      					Print["Tiles Used: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]], " ", StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]]];
      		      usedWords[word] = True;(* Mark the word as used *)
@@ -157,7 +202,7 @@ RunVersion2Scrabblegorithm[iterations_] :=
    		{j, 1, iterations}
    		]
   	]
-  (* Unsure about blankTileList. It exists because it leaves room for there being one blank or zero. *)
+
 
 (* Create Graphic of an Empty Scrabble Board. *)
 CreateInitialScrabbleBoard[] := 
@@ -205,7 +250,7 @@ UpdateScrabbleBoard[word_, pos_List, direction_String : ("Right" | "Down"), epil
            {
               {LightYellow, EdgeForm[Thin], 
        Rectangle[{x + (i - 1), y}, {x + i, y - 1}, RoundingRadius -> 0.2]},
-              Text[Style[Characters[word][[i]], 14],
+              Text[Style[Characters[word][[i]], 16, Bold],
                 {x + (i - 0.5), y - 0.5}]
             },
            {i, length}
@@ -214,7 +259,7 @@ UpdateScrabbleBoard[word_, pos_List, direction_String : ("Right" | "Down"), epil
            {
               {LightYellow, EdgeForm[Thin], 
        Rectangle[{x, y - (i - 1)}, {x + 1, y - i}, RoundingRadius -> 0.2]},
-              Text[Style[Characters[word][[i]], 14],
+              Text[Style[Characters[word][[i]], 16, Bold],
                 {x + 0.5, y - (i - 0.5)}]
             },
            {i, length}
@@ -223,66 +268,73 @@ UpdateScrabbleBoard[word_, pos_List, direction_String : ("Right" | "Down"), epil
       Join[epilog, epilogState]
     ]
 
-CheckForBlanksUsed[newRemainingCounts_, remainingCounts_, assoc_] := 
- Module[
-  {
-   negativeKeys = 
-    Select[Keys[newRemainingCounts], newRemainingCounts[#] < 0 &],
-   blanksUsed,
-   index = Length[assoc] + 1
-   },
-  blanksUsed = If[negativeKeys == {}, 0, First[negativeKeys]];
-  AppendTo[assoc, index -> <|"Blank" -> blanksUsed|>];
-  newRemainingCounts[blanksUsed] = 0
+(* Finds adjacent rows or columns to avoid. *)
+AdjacentChannels[list_List] := 
+Flatten[
+    Table[
+       Select[{n - 1, n, n + 1}, 1 <= # <= 15 &],
+       {n, list}
+     ]
   ]
 
-PositionReformat[{rows_, columns_}] := Flatten[Outer[List, rows, columns], 1]
+FindStartingSquares[boardRow_Integer, boardCol_Integer, retrace_, toTile_, dirOfPlay_] := 
+ Module[{posList},
+  If[dirOfPlay == "Down", posList = {ToUpperCase[FromLetterNumber[boardRow - retrace]], boardCol + toTile};
+   Flatten[Outer[List, posList[[1]], posList[[2]]], 1],
+   posList = {ToUpperCase[FromLetterNumber[boardRow + toTile]], boardCol - retrace};
+   Flatten[Outer[List, posList[[1]], posList[[2]]], 1]
+   ]
+  ]
 
 (* 
    Takes the current Master Association, the word to be played, and the possible options for the overlap tile,
    and returns an association in the form:
    <| "Down" -> <| "OverlapTileOption" -> {pos1, pos2, ...} |>, "Right" -> ... |>
 *)
-FindPossibleOverlapPositions[assoc_, word_, 
-  overlapTileOptions_List] :=
- Module[{overlapAssoc = <|"Down" -> <||>, "Right" -> <||>|>},
-    Do[
-      Do[
-        Module[{direction = Values[assoc][[All, "Direction"]][[i]], 
-              boardRow = LetterNumber[Values[assoc][[All, "Position"]][[i]][[1]]],
-              boardColumn = Values[assoc][[All, "Position"]][[i]][[2]],
-              avoidRows, avoidCols, positionListDown, 
-              positionListRight, 
-              overlapTileWithinPlayedWord = (StringPosition[Values[assoc][[All, "Bingo"]][[i]], overlapTileOptions[[j]]][[All, 1]] - 1),
-              workBackToStartNewWord = (StringPosition[word, overlapTileOptions[[j]]][[All, 1]] - 1)},
-              (*Play "Down" through this word.*)
-              If[direction == "Right",
-                avoidCols = Values[Select[assoc, #["Direction"] == "Down" &][[All, "Position"]]][[All, 2]];
-                positionListDown = Select[PositionReformat[{ToUpperCase[FromLetterNumber[boardRow - workBackToStartNewWord]], boardColumn + overlapTileWithinPlayedWord}], 
-                                      FreeQ[avoidCols, #[[2]]] && LetterNumber[#[[1]]] <= 8 && LetterNumber[#[[1]]] >= 1 &];
-                If[positionListDown =!= {},
-                  If[KeyExistsQ[overlapAssoc["Down"], overlapTileOptions[[j]]], 
-                    overlapAssoc["Down", overlapTileOptions[[j]]] = Flatten[Map[Append[overlapAssoc["Down", overlapTileOptions[[j]]], #]&, positionListDown], 1],
-                    overlapAssoc["Down", overlapTileOptions[[j]]] = positionListDown
-                    ]
-                  ],
-                (*Else, Play "Right" through this word.*)
-                avoidRows = Values[Select[assoc, #["Direction"] == "Right" &][[All, "Position"]]][[All, 1]];
-                positionListRight = Select[PositionReformat[{ToUpperCase[FromLetterNumber[boardRow + overlapTileWithinPlayedWord]], boardColumn - workBackToStartNewWord}], 
-                                      FreeQ[avoidRows, #[[1]]] && #[[2]] > 0 && #[[2]] <= 8 &];
-                If[positionListRight =!= {},
-                  If[KeyExistsQ[overlapAssoc["Right"], overlapTileOptions[[j]]], 
-                    overlapAssoc["Right", overlapTileOptions[[j]]] = Flatten[Map[Append[overlapAssoc["Right", overlapTileOptions[[j]]], #]&, positionListRight], 1],
-                    overlapAssoc["Right", overlapTileOptions[[j]]] = positionListRight]
-                  ]
-                ]
-              ], 
-          {i, Length[assoc]}
-        ], 
-        {j, Length[overlapTileOptions]}
-      ];
-    Select[overlapAssoc, # =!= <||> &]
-  ]
+
+FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
+   Module[{overlapAssoc = <|"Down" -> <||>, "Right" -> <||>|>},
+      Map[ (* Map over overlap tiles. *)
+         Function[{option},
+            Map[ (* Map over played bingos. *)
+               Function[{i},
+                  Module[{direction, boardRow, boardCol,
+                          toTile, retrace,
+                          avoidCols, posListDown, filterPosListDown,
+                          avoidRows, posListRight, filterPosListRight
+                      },             
+                      direction = Values[assoc][[All, "Direction"]][[i]];
+                      {boardRow, boardCol} = Values[assoc][[All, "Position"]][[i]];
+                        boardRow = LetterNumber[boardRow];
+                      toTile = StringPosition[Values[assoc][[All, "Bingo"]][[i]], option][[All, 1]] - 1;             
+                      retrace = StringPosition[word, option][[All, 1]] - 1;
+
+                      (* Play "Down" through this word, as it is directed to the "Right". *)
+                      If[direction == "Right",
+                        avoidCols = Values[Select[assoc, #["Direction"] == "Down" &][[All, "Position"]]][[All, 2]];
+                        avoidCols = AdjacentChannels[avoidCols];     
+                        posListDown = FindStartingSquares[boardRow, boardCol, retrace, toTile, "Down"];
+                        filterPosListDown = Select[posListDown, FreeQ[avoidCols, #[[2]]] && LetterNumber[#[[1]]] <= 8 && LetterNumber[#[[1]]] >= 1 &];
+                        If[filterPosListDown =!= {}, overlapAssoc["Down", option] = Join[Lookup[overlapAssoc["Down"], option, {}], filterPosListDown]
+                         ],
+                        
+                        (* Else, play "Right" through this word, as it is directed "Down". *)
+                        avoidRows = Values[Select[assoc, #["Direction"] == "Right" &][[All, "Position"]]][[All, 1]];
+                        avoidRows = ToUpperCase[FromLetterNumber[AdjacentChannels[LetterNumber[avoidRows]]]];
+                        posListRight = FindStartingSquares[boardRow, boardCol, retrace, toTile, "Right"];
+                        filterPosListRight = Select[posListRight, FreeQ[avoidRows, #[[1]]] && #[[2]] > 0 && #[[2]] <= 8 &];
+                        If[filterPosListRight =!= {}, overlapAssoc["Right", option] = Join[Lookup[overlapAssoc["Right"], option, {}], filterPosListRight]
+                         ]
+                      ]
+                   ]
+                ],
+               Range[Length[assoc]]
+             ]
+          ],
+         overlapTileOptions
+       ];
+      Select[overlapAssoc, # =!= <||> &]
+    ]
 
 FindPossibleOverlapEpilogs[word_, overlapPositions_, epilogState_] :=
      Module[{epilogAssoc = <||>, overlapTileOptions = DeleteDuplicates[Flatten[Keys[Values[overlapPositions]]]]},

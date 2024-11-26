@@ -1,0 +1,245 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      8113,        235]
+NotebookOptionsPosition[      7607,        218]
+NotebookOutlinePosition[      8026,        234]
+CellTagsIndexPosition[      7983,        231]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"board", "=", 
+     RowBox[{"CreateInitialScrabbleBoard", "[", "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"epilog", "=", 
+     RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"epilog", "=", 
+     RowBox[{"UpdateScrabbleBoard", "[", 
+      RowBox[{"\"\<REECHED\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<H\>\"", ",", "2"}], "}"}], ",", "\"\<Right\>\"", ",", 
+       "epilog"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"epilog", "=", 
+     RowBox[{"UpdateScrabbleBoard", "[", 
+      RowBox[{"\"\<ENCOMION\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<H\>\"", ",", "7"}], "}"}], ",", "\"\<Down\>\"", ",", 
+       "epilog"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"Show", "[", 
+    RowBox[{"board", ",", 
+     RowBox[{"Epilog", "->", "epilog"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.941568558455036*^9, 3.941568694701809*^9}},
+ CellLabel->
+  "In[249]:=",ExpressionUUID->"580e3a2c-fca7-b044-ae50-4d697df581aa"],
+
+Cell[BoxData[
+ GraphicsBox[{RasterBox[CompressedData["
+1:eJxTTMoPSmVmYGDgh2IQGwI+2DPgAKFg8BRDHpc4qnkIc0k1B7s49dxJW/eT
+6k6Y+gcUux+/vzDdNzTMp3X40Cv8iU9XpKofKP9Sx52DL/yHdngOvvAf2u5B
+B0Ot/Bwu5tMuX5Bq/mBzD/58hAkGV/gPlfJ/qIQn6eYPNveQZz66PaPm08v8
+wZbfh4p7UO0fbT8PDncOvvAkVf3g8u/o+AZ+cVLDZ6i0Q4bueB0AdOt7Xg==
+
+    "], {{0, 0}, {15, 15}}, {0, 1}], {
+    {GrayLevel[0], 
+     StyleBox[
+      LineBox[{{{0, 15}, {15, 15}}, {{0, 14}, {15, 14}}, {{0, 13}, {15, 
+       13}}, {{0, 12}, {15, 12}}, {{0, 11}, {15, 11}}, {{0, 10}, {15, 10}}, {{
+       0, 9}, {15, 9}}, {{0, 8}, {15, 8}}, {{0, 7}, {15, 7}}, {{0, 6}, {15, 
+       6}}, {{0, 5}, {15, 5}}, {{0, 4}, {15, 4}}, {{0, 3}, {15, 3}}, {{0, 
+       2}, {15, 2}}, {{0, 1}, {15, 1}}, {{0, 0}, {15, 0}}}],
+      Antialiasing->False]}, 
+    {GrayLevel[0], 
+     StyleBox[
+      LineBox[{{{0, 0}, {0, 15}}, {{1, 0}, {1, 15}}, {{2, 0}, {2, 15}}, {{3, 
+       0}, {3, 15}}, {{4, 0}, {4, 15}}, {{5, 0}, {5, 15}}, {{6, 0}, {6, 
+       15}}, {{7, 0}, {7, 15}}, {{8, 0}, {8, 15}}, {{9, 0}, {9, 15}}, {{10, 
+       0}, {10, 15}}, {{11, 0}, {11, 15}}, {{12, 0}, {12, 15}}, {{13, 0}, {13,
+        15}}, {{14, 0}, {14, 15}}, {{15, 0}, {15, 15}}}],
+      Antialiasing->False]}}},
+  Epilog->{{{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{6, 8}, {7, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"E\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      6.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{6, 7}, {7, 6}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"N\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      6.5, 6.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{6, 6}, {7, 5}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"C\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      6.5, 5.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{6, 5}, {7, 4}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"O\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      6.5, 4.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{6, 4}, {7, 3}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"M\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      6.5, 3.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{6, 3}, {7, 2}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"I\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      6.5, 2.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{6, 2}, {7, 1}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"O\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      6.5, 1.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{6, 1}, {7, 0}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"N\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      6.5, 0.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{1, 8}, {2, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"R\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      1.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{2, 8}, {3, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"E\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      2.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{3, 8}, {4, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"E\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      3.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{4, 8}, {5, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"C\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      4.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{5, 8}, {6, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"H\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      5.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{6, 8}, {7, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"E\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      6.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 8}, {8, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\"D\"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 7.5}]}},
+  Frame->False,
+  FrameLabel->{None, None},
+  FrameTicks->{{None, None}, {None, None}},
+  GridLinesStyle->Directive[
+    GrayLevel[0.5, 0.4]],
+  Method->{
+   "GridLinesInFront" -> True, "DefaultBoundaryStyle" -> Automatic, 
+    "DefaultGraphicsInteraction" -> {
+     "Version" -> 1.2, "TrackMousePosition" -> {True, False}, 
+      "Effects" -> {
+       "Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, 
+        "Droplines" -> {
+         "freeformCursorMode" -> True, 
+          "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultPlotStyle" -> 
+    Automatic}]], "Output",
+ CellChangeTimes->{{3.9415686663301888`*^9, 3.9415686950641727`*^9}},
+ CellLabel->
+  "Out[253]=",ExpressionUUID->"39d0ab70-ee33-6441-ba83-4bcbd019fadd"]
+}, Open  ]]
+},
+WindowSize->{574.8, 645.6},
+WindowMargins->{{Automatic, -4.7999999999999545`}, {Automatic, 0}},
+FrontEndVersion->"14.1 for Microsoft Windows (64-bit) (July 16, 2024)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"d735ed1b-7253-9c42-884a-29acb8bcd23f"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 1105, 29, 161, "Input",ExpressionUUID->"580e3a2c-fca7-b044-ae50-4d697df581aa"],
+Cell[1684, 53, 5907, 162, 395, "Output",ExpressionUUID->"39d0ab70-ee33-6441-ba83-4bcbd019fadd"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+

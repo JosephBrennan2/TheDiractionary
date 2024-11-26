@@ -10,7 +10,6 @@ UpdateScrabbleBoard;
 AdjacentChannels;
 FindStartingSquares;
 FindPossibleOverlapPositions;
-FindPossibleOverlapEpilogs;
 
 (*https://www.reddit.com/r/scrabble/comments/my5tie/the_419_words_erased_from_csw/*)
 
@@ -295,7 +294,7 @@ FindStartingSquares[boardRow_Integer, boardCol_Integer, retrace_, toTile_, dirOf
 FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
    Module[{overlapAssoc = <|"Down" -> <||>, "Right" -> <||>|>},
       Map[ (* Map over overlap tiles. *)
-         Function[{option},
+         Function[{tile},
             Map[ (* Map over played bingos. *)
                Function[{i},
                   Module[{direction, boardRow, boardCol,
@@ -306,8 +305,8 @@ FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
                       direction = Values[assoc][[All, "Direction"]][[i]];
                       {boardRow, boardCol} = Values[assoc][[All, "Position"]][[i]];
                         boardRow = LetterNumber[boardRow];
-                      toTile = StringPosition[Values[assoc][[All, "Bingo"]][[i]], option][[All, 1]] - 1;             
-                      retrace = StringPosition[word, option][[All, 1]] - 1;
+                      toTile = StringPosition[Values[assoc][[All, "Bingo"]][[i]], tile][[All, 1]] - 1;             
+                      retrace = StringPosition[word, tile][[All, 1]] - 1;
 
                       (* Play "Down" through this word, as it is directed to the "Right". *)
                       If[direction == "Right",
@@ -315,7 +314,7 @@ FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
                         avoidCols = AdjacentChannels[avoidCols];     
                         posListDown = FindStartingSquares[boardRow, boardCol, retrace, toTile, "Down"];
                         filterPosListDown = Select[posListDown, FreeQ[avoidCols, #[[2]]] && LetterNumber[#[[1]]] <= 8 && LetterNumber[#[[1]]] >= 1 &];
-                        If[filterPosListDown =!= {}, overlapAssoc["Down", option] = Join[Lookup[overlapAssoc["Down"], option, {}], filterPosListDown]
+                        If[filterPosListDown =!= {}, overlapAssoc["Down", tile] = Join[Lookup[overlapAssoc["Down"], tile, {}], filterPosListDown]
                          ],
                         
                         (* Else, play "Right" through this word, as it is directed "Down". *)
@@ -323,7 +322,7 @@ FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
                         avoidRows = ToUpperCase[FromLetterNumber[AdjacentChannels[LetterNumber[avoidRows]]]];
                         posListRight = FindStartingSquares[boardRow, boardCol, retrace, toTile, "Right"];
                         filterPosListRight = Select[posListRight, FreeQ[avoidRows, #[[1]]] && #[[2]] > 0 && #[[2]] <= 8 &];
-                        If[filterPosListRight =!= {}, overlapAssoc["Right", option] = Join[Lookup[overlapAssoc["Right"], option, {}], filterPosListRight]
+                        If[filterPosListRight =!= {}, overlapAssoc["Right", tile] = Join[Lookup[overlapAssoc["Right"], tile, {}], filterPosListRight]
                          ]
                       ]
                    ]
@@ -333,31 +332,14 @@ FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
           ],
          overlapTileOptions
        ];
-      Select[overlapAssoc, # =!= <||> &]
+      overlapAssoc = Select[overlapAssoc, # =!= <||> &];
+      Flatten[
+        Table[{#, dir, tile} & /@ overlapAssoc[dir, tile],
+          {dir, Keys[overlapAssoc]},
+          {tile, Keys[overlapAssoc[dir]]}
+            ], 2
+          ]
     ]
-
-FindPossibleOverlapEpilogs[word_, overlapPositions_, epilogState_] :=
-     Module[{epilogAssoc = <||>, overlapTileOptions = DeleteDuplicates[Flatten[Keys[Values[overlapPositions]]]]},
-          Do[
-            Do[
-              With[{positions = Lookup[overlapPositions, dir, <||>][letter]},
-                If[ListQ[positions] && Length[positions] > 0, (* Check if valid plays exist for the letter and direction. *)
-                  Do[
-                    Module[{newEpilog},
-                          newEpilog = epilogState;
-                          newEpilog = UpdateScrabbleBoard[word, pos, dir, newEpilog];
-                          AppendTo[epilogAssoc, {pos, dir, letter} -> newEpilog]
-                          ],
-                    {pos, positions}
-                    ]
-                  ]
-                ],
-              {dir, Keys[overlapPositions]}
-              ],
-          {letter, overlapTileOptions}
-          ];
-      epilogAssoc
-      ]
 
 End[]
 

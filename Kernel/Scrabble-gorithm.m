@@ -10,6 +10,8 @@ UpdateScrabbleBoard;
 AdjacentChannels;
 FindStartingSquares;
 FindPossibleOverlapPositions;
+ForbiddenSquares;
+UpdateForbiddenSquares;
 
 (*https://www.reddit.com/r/scrabble/comments/my5tie/the_419_words_erased_from_csw/*)
 
@@ -292,7 +294,7 @@ FindStartingSquares[boardRow_Integer, boardCol_Integer, retrace_, toTile_, dirOf
 *)
 
 FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
-   Module[{overlapAssoc = <|"Down" -> <||>, "Right" -> <||>|>},
+   Module[{overlapAssoc = <|"Down" -> <||>, "Right" -> <||>|>, overlapVectors, usedSquares = UpdateForbiddenSquares[assoc], overlapSquaresAssoc},
       Map[ (* Map over overlap tiles. *)
          Function[{tile},
             Map[ (* Map over played bingos. *)
@@ -333,13 +335,38 @@ FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
          overlapTileOptions
        ];
       overlapAssoc = Select[overlapAssoc, # =!= <||> &];
-      Flatten[
-        Table[{#, dir, tile} & /@ overlapAssoc[dir, tile],
-          {dir, Keys[overlapAssoc]},
-          {tile, Keys[overlapAssoc[dir]]}
-            ], 2
-          ]
+      overlapVectors = Flatten[Table[{#, dir, tile} & /@ overlapAssoc[dir, tile], {dir, Keys[overlapAssoc]}, {tile, Keys[overlapAssoc[dir]]}], 2];
+      overlapSquaresAssoc = Map[# -> Intersection[ForbiddenSquares[word, #[[1]], #[[2]]], usedSquares] &, overlapVectors];
+      Keys[Select[overlapSquaresAssoc, Length[Values[#]] == 1 &]]
     ]
+
+ForbiddenSquares[word_, startPos_, direction_] := 
+ Module[{row, col, length = StringLength[word]},
+    {row, col} = startPos;
+    Table[
+       If[direction === "Right",
+          {row, col + i},
+          {ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col}
+        ],
+       {i, -1, length}
+     ]
+  ]
+
+UpdateForbiddenSquares[assoc_] :=
+ DeleteDuplicates[
+  Flatten[
+   Values[
+      Map[
+     With[{word = #["Bingo"], pos = #["Position"], 
+        dir = #["Direction"]},
+             ForbiddenSquares[word, pos, dir]
+           ] &,
+         assoc
+       ]
+    ],
+   1
+   ]
+  ]
 
 End[]
 

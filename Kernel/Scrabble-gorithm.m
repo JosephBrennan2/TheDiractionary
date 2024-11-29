@@ -12,6 +12,9 @@ FindStartingSquares;
 FindPossibleOverlapPositions;
 ForbiddenSquares;
 UpdateForbiddenSquares;
+Battleship;
+ForbiddenSquaresPlayingDown;
+ForbiddenSquaresPlayingRight;
 
 (*https://www.reddit.com/r/scrabble/comments/my5tie/the_419_words_erased_from_csw/*)
 
@@ -37,17 +40,17 @@ UpdateRemainingTileCount[remainingCounts_, word_, blanks_] :=
    	]
   ]
 
-CheckForBlanksUsed[newRemainingCounts_, remainingCounts_, assoc_] := 
+CheckForBlanksUsed[remainingCounts_, assoc_] := 
  Module[
   {
    negativeKeys = 
-    Select[Keys[newRemainingCounts], newRemainingCounts[#] < 0 &],
+    Select[Keys[remainingCounts], remainingCounts[#] < 0 &],
    blanksUsed,
    index = Length[assoc] + 1
    },
-  blanksUsed = If[negativeKeys == {}, 0, First[negativeKeys]];
+  If[negativeKeys =!= {}, blanksUsed = First[negativeKeys]];
   AppendTo[assoc, index -> <|"Blank" -> blanksUsed|>];
-  newRemainingCounts[blanksUsed] = 0
+  remainingCounts[blanksUsed] = 0
   ]
 
 
@@ -294,7 +297,7 @@ FindStartingSquares[boardRow_Integer, boardCol_Integer, retrace_, toTile_, dirOf
 *)
 
 FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
-   Module[{overlapAssoc = <|"Down" -> <||>, "Right" -> <||>|>, overlapVectors, usedSquares = UpdateForbiddenSquares[assoc], overlapSquaresAssoc},
+   Module[{overlapAssoc = <|"Down" -> <||>, "Right" -> <||>|>, overlapVectors, forbiddenSquares, overlapSquaresAssoc},
       Map[ (* Map over overlap tiles. *)
          Function[{tile},
             Map[ (* Map over played bingos. *)
@@ -306,14 +309,13 @@ FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
                       },             
                       direction = Values[assoc][[All, "Direction"]][[i]];
                       {boardRow, boardCol} = Values[assoc][[All, "Position"]][[i]];
-                        boardRow = LetterNumber[boardRow];
+                      boardRow = LetterNumber[boardRow];
                       toTile = StringPosition[Values[assoc][[All, "Bingo"]][[i]], tile][[All, 1]] - 1;             
                       retrace = StringPosition[word, tile][[All, 1]] - 1;
 
                       (* Play "Down" through this word, as it is directed to the "Right". *)
                       If[direction == "Right",
-                        avoidCols = Values[Select[assoc, #["Direction"] == "Down" &][[All, "Position"]]][[All, 2]];
-                        avoidCols = AdjacentChannels[avoidCols];     
+                        avoidCols = Values[Select[assoc, #["Direction"] == "Down" &][[All, "Position"]]][[All, 2]];     
                         posListDown = FindStartingSquares[boardRow, boardCol, retrace, toTile, "Down"];
                         filterPosListDown = Select[posListDown, FreeQ[avoidCols, #[[2]]] && LetterNumber[#[[1]]] <= 8 && LetterNumber[#[[1]]] >= 1 &];
                         If[filterPosListDown =!= {}, overlapAssoc["Down", tile] = Join[Lookup[overlapAssoc["Down"], tile, {}], filterPosListDown]
@@ -321,7 +323,6 @@ FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
                         
                         (* Else, play "Right" through this word, as it is directed "Down". *)
                         avoidRows = Values[Select[assoc, #["Direction"] == "Right" &][[All, "Position"]]][[All, 1]];
-                        avoidRows = ToUpperCase[FromLetterNumber[AdjacentChannels[LetterNumber[avoidRows]]]];
                         posListRight = FindStartingSquares[boardRow, boardCol, retrace, toTile, "Right"];
                         filterPosListRight = Select[posListRight, FreeQ[avoidRows, #[[1]]] && #[[2]] > 0 && #[[2]] <= 8 &];
                         If[filterPosListRight =!= {}, overlapAssoc["Right", tile] = Join[Lookup[overlapAssoc["Right"], tile, {}], filterPosListRight]
@@ -336,30 +337,62 @@ FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
        ];
       overlapAssoc = Select[overlapAssoc, # =!= <||> &];
       overlapVectors = Flatten[Table[{#, dir, tile} & /@ overlapAssoc[dir, tile], {dir, Keys[overlapAssoc]}, {tile, Keys[overlapAssoc[dir]]}], 2];
-      overlapSquaresAssoc = Map[# -> Intersection[ForbiddenSquares[word, #[[1]], #[[2]]], usedSquares] &, overlapVectors];
+
+      
+      overlapSquaresAssoc = Map[
+        # -> Intersection[
+          Battleship[word, #[[1]], #[[2]]], 
+          If[#[[2]] == "Right", UpdateForbiddenSquares[assoc, "Right"], UpdateForbiddenSquares[assoc, "Down"]]
+          ] &, 
+          overlapVectors
+          ];
+
+
+      If[overlapSquaresAssoc =!= {}, overlapSquaresAssoc];
+
       Keys[Select[overlapSquaresAssoc, Length[Values[#]] == 1 &]]
     ]
 
-ForbiddenSquares[word_, startPos_, direction_] := 
+
+
+Battleship[word_, startPos_, direction_] :=
  Module[{row, col, length = StringLength[word]},
     {row, col} = startPos;
-    Table[
-       If[direction === "Right",
-          {row, col + i},
-          {ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col}
-        ],
-       {i, -1, length}
-     ]
+    If[direction === "Right",
+      Table[{row, col + i}, {i, 0, length - 1}],
+      Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col}, {i, 0, length - 1}]
+  ]
+ ]
+
+ForbiddenSquares[word_, startPos_, direction_] :=
+ Module[{row, col, length = StringLength[word], 
+    mainPositions, 
+    abovePositions, belowPositions, 
+    leftPositions, rightPositions
+   },
+    {row, col} = startPos;
+    If[direction === "Right",
+      mainPositions = Table[{row, col + i}, {i, -1, length}];
+      abovePositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] - 1]], col + i}, {i, 0, length - 1} ];
+      belowPositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + 1]], col + i}, {i, 0, length - 1} ];
+      Join[mainPositions, abovePositions, belowPositions],
+   
+      mainPositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col}, {i, -1, length}];
+      leftPositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col - 1}, {i, 0, length - 1}];
+      rightPositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col + 1}, {i, 0, length - 1}];
+      Join[mainPositions, leftPositions, rightPositions]
+   ]
   ]
 
-UpdateForbiddenSquares[assoc_] :=
+
+UpdateForbiddenSquares[assoc_, direction_] :=
  DeleteDuplicates[
   Flatten[
    Values[
       Map[
      With[{word = #["Bingo"], pos = #["Position"], 
         dir = #["Direction"]},
-             ForbiddenSquares[word, pos, dir]
+             If[direction == "Right", ForbiddenSquaresPlayingRight[word, pos, dir], ForbiddenSquaresPlayingDown[word, pos, dir]]
            ] &,
          assoc
        ]
@@ -367,6 +400,43 @@ UpdateForbiddenSquares[assoc_] :=
    1
    ]
   ]
+
+(* Find forbidden squares for a given word in assoc, if the current word is being played to the right. *)
+ForbiddenSquaresPlayingRight[word_, startPos_, direction_] :=
+ Module[{row, col, length = StringLength[word], 
+    mainPositions, 
+    abovePositions, belowPositions
+   },
+    {row, col} = startPos;
+    If[direction === "Right",
+      mainPositions = Table[{row, col + i}, {i, -1, length}];
+      abovePositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] - 1]], col + i}, {i, 0, length - 1} ];
+      belowPositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + 1]], col + i}, {i, 0, length - 1} ];
+      Join[mainPositions, abovePositions, belowPositions],
+   
+      mainPositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col}, {i, -1, length}];
+      mainPositions
+   ]
+  ]
+
+(* Find forbidden squares for a given word in assoc, if the current word is being played down. *)
+ForbiddenSquaresPlayingDown[word_, startPos_, direction_] :=
+ Module[{row, col, length = StringLength[word], 
+    mainPositions, 
+    leftPositions, rightPositions
+   },
+    {row, col} = startPos;
+    If[direction === "Right",
+      mainPositions = Table[{row, col + i}, {i, -1, length}];
+      mainPositions,
+   
+      mainPositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col}, {i, -1, length}];
+      leftPositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col - 1}, {i, 0, length - 1}];
+      rightPositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col + 1}, {i, 0, length - 1}];
+      Join[mainPositions, leftPositions, rightPositions]
+   ]
+  ]
+
 
 End[]
 

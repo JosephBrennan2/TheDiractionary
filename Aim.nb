@@ -1,0 +1,1142 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[     39534,       1134]
+NotebookOptionsPosition[     39130,       1119]
+NotebookOutlinePosition[     39574,       1136]
+CellTagsIndexPosition[     39531,       1133]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ GraphicsBox[{RasterBox[CompressedData["
+1:eJxTTMoPSmVmYGDgh2IQGwI+2DPgAKFg8BRDHpc4qnkIc0k1B7s49dxJW/eT
+6k6Y+gcUux+/vzDdNzTMp3X40Cv8iU9XpKofKP9Sx52DL/yHdngOvvAf2u5B
+B0Ot/Bwu5tMuX5Bq/mBzD/58hAkGV/gPlfJ/qIQn6eYPNveQZz66PaPm08v8
+wZbfh4p7UO0fbT8PDncOvvAkVf3g8u/o+AZ+cVLDZ6i0Q4bueB0AdOt7Xg==
+
+    "], {{0, 0}, {15, 15}}, {0, 1}], {
+    {GrayLevel[0], 
+     StyleBox[
+      LineBox[{{{0, 15}, {15, 15}}, {{0, 14}, {15, 14}}, {{0, 13}, {15, 
+       13}}, {{0, 12}, {15, 12}}, {{0, 11}, {15, 11}}, {{0, 10}, {15, 10}}, {{
+       0, 9}, {15, 9}}, {{0, 8}, {15, 8}}, {{0, 7}, {15, 7}}, {{0, 6}, {15, 
+       6}}, {{0, 5}, {15, 5}}, {{0, 4}, {15, 4}}, {{0, 3}, {15, 3}}, {{0, 
+       2}, {15, 2}}, {{0, 1}, {15, 1}}, {{0, 0}, {15, 0}}}],
+      Antialiasing->False]}, 
+    {GrayLevel[0], 
+     StyleBox[
+      LineBox[{{{0, 0}, {0, 15}}, {{1, 0}, {1, 15}}, {{2, 0}, {2, 15}}, {{3, 
+       0}, {3, 15}}, {{4, 0}, {4, 15}}, {{5, 0}, {5, 15}}, {{6, 0}, {6, 
+       15}}, {{7, 0}, {7, 15}}, {{8, 0}, {8, 15}}, {{9, 0}, {9, 15}}, {{10, 
+       0}, {10, 15}}, {{11, 0}, {11, 15}}, {{12, 0}, {12, 15}}, {{13, 0}, {13,
+        15}}, {{14, 0}, {14, 15}}, {{15, 0}, {15, 15}}}],
+      Antialiasing->False]}}},
+  Epilog->{{{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{3, 2}, {4, 1}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      3.5, 1.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{4, 2}, {5, 1}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      4.5, 1.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{5, 2}, {6, 1}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      5.5, 1.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{6, 2}, {7, 1}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      6.5, 1.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 2}, {8, 1}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 1.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{8, 2}, {9, 1}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      8.5, 1.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{9, 2}, {10, 1}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      9.5, 1.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{10, 2}, {11, 1}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      10.5, 1.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{3, 8}, {4, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      3.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{3, 7}, {4, 6}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      3.5, 6.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{3, 6}, {4, 5}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      3.5, 5.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{3, 5}, {4, 4}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      3.5, 4.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{3, 4}, {4, 3}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      3.5, 3.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{3, 3}, {4, 2}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      3.5, 2.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{3, 2}, {4, 1}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      3.5, 1.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{3, 1}, {4, 0}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      3.5, 0.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{1, 8}, {2, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      1.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{1, 7}, {2, 6}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      1.5, 6.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{1, 6}, {2, 5}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      1.5, 5.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{1, 5}, {2, 4}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      1.5, 4.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{1, 4}, {2, 3}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      1.5, 3.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{1, 3}, {2, 2}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      1.5, 2.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{1, 2}, {2, 1}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      1.5, 1.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{1, 1}, {2, 0}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      1.5, 0.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{14, 8}, {15, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      14.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{14, 7}, {15, 6}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      14.5, 6.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{14, 6}, {15, 5}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      14.5, 5.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{14, 5}, {15, 4}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      14.5, 4.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{14, 4}, {15, 3}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      14.5, 3.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{14, 3}, {15, 2}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      14.5, 2.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{14, 2}, {15, 1}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      14.5, 1.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{14, 1}, {15, 0}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      14.5, 0.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{12, 8}, {13, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      12.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{12, 7}, {13, 6}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      12.5, 6.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{12, 6}, {13, 5}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      12.5, 5.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{12, 5}, {13, 4}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      12.5, 4.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{12, 4}, {13, 3}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      12.5, 3.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{12, 3}, {13, 2}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      12.5, 2.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{12, 2}, {13, 1}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      12.5, 1.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{12, 1}, {13, 0}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      12.5, 0.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 6}, {8, 5}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 5.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{8, 6}, {9, 5}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      8.5, 5.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{9, 6}, {10, 5}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      9.5, 5.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{10, 6}, {11, 5}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      10.5, 5.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{11, 6}, {12, 5}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      11.5, 5.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{12, 6}, {13, 5}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      12.5, 5.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{13, 6}, {14, 5}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      13.5, 5.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{14, 6}, {15, 5}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      14.5, 5.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{9, 11}, {10, 10}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      9.5, 10.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{9, 10}, {10, 9}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      9.5, 9.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{9, 9}, {10, 8}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      9.5, 8.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{9, 8}, {10, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      9.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{9, 7}, {10, 6}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      9.5, 6.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{9, 6}, {10, 5}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      9.5, 5.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{9, 5}, {10, 4}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      9.5, 4.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{9, 4}, {10, 3}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      9.5, 3.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{6, 11}, {7, 10}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      6.5, 10.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 11}, {8, 10}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 10.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{8, 11}, {9, 10}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      8.5, 10.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{9, 11}, {10, 10}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      9.5, 10.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{10, 11}, {11, 10}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      10.5, 10.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{11, 11}, {12, 10}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      11.5, 10.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{12, 11}, {13, 10}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      12.5, 10.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{13, 11}, {14, 10}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      13.5, 10.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{6, 13}, {7, 12}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      6.5, 12.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 13}, {8, 12}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 12.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{8, 13}, {9, 12}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      8.5, 12.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{9, 13}, {10, 12}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      9.5, 12.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{10, 13}, {11, 12}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      10.5, 12.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{11, 13}, {12, 12}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      11.5, 12.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{12, 13}, {13, 12}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      12.5, 12.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{13, 13}, {14, 12}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      13.5, 12.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{6, 15}, {7, 14}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      6.5, 14.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 15}, {8, 14}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 14.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{8, 15}, {9, 14}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      8.5, 14.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{9, 15}, {10, 14}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      9.5, 14.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{10, 15}, {11, 14}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      10.5, 14.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{11, 15}, {12, 14}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      11.5, 14.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{12, 15}, {13, 14}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      12.5, 14.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{13, 15}, {14, 14}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      13.5, 14.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 15}, {8, 14}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 14.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 14}, {8, 13}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 13.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 13}, {8, 12}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 12.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 12}, {8, 11}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 11.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 11}, {8, 10}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 10.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 10}, {8, 9}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 9.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 9}, {8, 8}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 8.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 8}, {8, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{4, 15}, {5, 14}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      4.5, 14.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{4, 14}, {5, 13}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      4.5, 13.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{4, 13}, {5, 12}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      4.5, 12.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{4, 12}, {5, 11}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      4.5, 11.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{4, 11}, {5, 10}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      4.5, 10.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{4, 10}, {5, 9}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      4.5, 9.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{4, 9}, {5, 8}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      4.5, 8.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{4, 8}, {5, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      4.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{2, 15}, {3, 14}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      2.5, 14.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{2, 14}, {3, 13}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      2.5, 13.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{2, 13}, {3, 12}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      2.5, 12.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{2, 12}, {3, 11}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      2.5, 11.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{2, 11}, {3, 10}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      2.5, 10.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{2, 10}, {3, 9}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      2.5, 9.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{2, 9}, {3, 8}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      2.5, 8.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{2, 8}, {3, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      2.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{1, 8}, {2, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      1.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{2, 8}, {3, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      2.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{3, 8}, {4, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      3.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{4, 8}, {5, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      4.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{5, 8}, {6, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      5.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{6, 8}, {7, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      6.5, 7.5}]}, {{
+      RGBColor[1, 1, 0.85], 
+      EdgeForm[
+       Thickness[Tiny]], 
+      RectangleBox[{7, 8}, {8, 7}, RoundingRadius -> 0.2]}, 
+     InsetBox[
+      FormBox[
+       StyleBox["\" \"", 16, Bold, StripOnInput -> False], TraditionalForm], {
+      7.5, 7.5}]}, 
+    InsetBox[
+     FormBox[
+      TagBox[
+       GridBox[{{
+          StyleBox["\"1\"", 12, Bold, StripOnInput -> False]}, {
+          StyleBox["\"\[RightArrow]\"", 12, Bold, StripOnInput -> False]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Center}}}, DefaultBaseStyle -> 
+        "Column", 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{Automatic}}, "Rows" -> {{0}}}], 
+       "Column"], TraditionalForm], {1.5, 7.5}], 
+    InsetBox[
+     FormBox[
+      TagBox[
+       GridBox[{{
+          StyleBox["\"2\"", 12, Bold, StripOnInput -> False]}, {
+          StyleBox["\"\[DownArrow]\"", 12, Bold, StripOnInput -> False]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Center}}}, DefaultBaseStyle -> 
+        "Column", 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{Automatic}}, "Rows" -> {{0}}}], 
+       "Column"], TraditionalForm], {2.5, 14.5}], 
+    InsetBox[
+     FormBox[
+      TagBox[
+       GridBox[{{
+          StyleBox["\"3\"", 12, Bold, StripOnInput -> False]}, {
+          StyleBox["\"\[DownArrow]\"", 12, Bold, StripOnInput -> False]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Center}}}, DefaultBaseStyle -> 
+        "Column", 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{Automatic}}, "Rows" -> {{0}}}], 
+       "Column"], TraditionalForm], {4.5, 14.5}], 
+    InsetBox[
+     FormBox[
+      TagBox[
+       GridBox[{{
+          StyleBox["\"4\"", 12, Bold, StripOnInput -> False]}, {
+          StyleBox["\"\[DownArrow]\"", 12, Bold, StripOnInput -> False]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Center}}}, DefaultBaseStyle -> 
+        "Column", 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{Automatic}}, "Rows" -> {{0}}}], 
+       "Column"], TraditionalForm], {7.5, 14.5}], 
+    InsetBox[
+     FormBox[
+      TagBox[
+       GridBox[{{
+          StyleBox["\"5\"", 12, Bold, StripOnInput -> False]}, {
+          StyleBox["\"\[RightArrow]\"", 12, Bold, StripOnInput -> False]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Center}}}, DefaultBaseStyle -> 
+        "Column", 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{Automatic}}, "Rows" -> {{0}}}], 
+       "Column"], TraditionalForm], {6.5, 14.5}], 
+    InsetBox[
+     FormBox[
+      TagBox[
+       GridBox[{{
+          StyleBox["\"6\"", 12, Bold, StripOnInput -> False]}, {
+          StyleBox["\"\[RightArrow]\"", 12, Bold, StripOnInput -> False]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Center}}}, DefaultBaseStyle -> 
+        "Column", 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{Automatic}}, "Rows" -> {{0}}}], 
+       "Column"], TraditionalForm], {6.5, 12.5}], 
+    InsetBox[
+     FormBox[
+      TagBox[
+       GridBox[{{
+          StyleBox["\"7\"", 12, Bold, StripOnInput -> False]}, {
+          StyleBox["\"\[RightArrow]\"", 12, Bold, StripOnInput -> False]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Center}}}, DefaultBaseStyle -> 
+        "Column", 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{Automatic}}, "Rows" -> {{0}}}], 
+       "Column"], TraditionalForm], {6.5, 10.5}], 
+    InsetBox[
+     FormBox[
+      TagBox[
+       GridBox[{{
+          StyleBox["\"8\"", 12, Bold, StripOnInput -> False]}, {
+          StyleBox["\"\[DownArrow]\"", 12, Bold, StripOnInput -> False]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Center}}}, DefaultBaseStyle -> 
+        "Column", 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{Automatic}}, "Rows" -> {{0}}}], 
+       "Column"], TraditionalForm], {9.5, 10.5}], 
+    InsetBox[
+     FormBox[
+      TagBox[
+       GridBox[{{
+          StyleBox["\"9\"", 12, Bold, StripOnInput -> False]}, {
+          StyleBox["\"\[RightArrow]\"", 12, Bold, StripOnInput -> False]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Center}}}, DefaultBaseStyle -> 
+        "Column", 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{Automatic}}, "Rows" -> {{0}}}], 
+       "Column"], TraditionalForm], {7.5, 5.5}], 
+    InsetBox[
+     FormBox[
+      TagBox[
+       GridBox[{{
+          StyleBox["\"10\"", 12, Bold, StripOnInput -> False]}, {
+          StyleBox["\"\[DownArrow]\"", 12, Bold, StripOnInput -> False]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Center}}}, DefaultBaseStyle -> 
+        "Column", 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{Automatic}}, "Rows" -> {{0}}}], 
+       "Column"], TraditionalForm], {12.5, 7.5}], 
+    InsetBox[
+     FormBox[
+      TagBox[
+       GridBox[{{
+          StyleBox["\"11\"", 12, Bold, StripOnInput -> False]}, {
+          StyleBox["\"\[DownArrow]\"", 12, Bold, StripOnInput -> False]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Center}}}, DefaultBaseStyle -> 
+        "Column", 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{Automatic}}, "Rows" -> {{0}}}], 
+       "Column"], TraditionalForm], {14.5, 7.5}], 
+    InsetBox[
+     FormBox[
+      TagBox[
+       GridBox[{{
+          StyleBox["\"12\"", 12, Bold, StripOnInput -> False]}, {
+          StyleBox["\"\[DownArrow]\"", 12, Bold, StripOnInput -> False]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Center}}}, DefaultBaseStyle -> 
+        "Column", 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{Automatic}}, "Rows" -> {{0}}}], 
+       "Column"], TraditionalForm], {1.5, 6.5}], 
+    InsetBox[
+     FormBox[
+      TagBox[
+       GridBox[{{
+          StyleBox["\"13\"", 12, Bold, StripOnInput -> False]}, {
+          StyleBox["\"\[DownArrow]\"", 12, Bold, StripOnInput -> False]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Center}}}, DefaultBaseStyle -> 
+        "Column", 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{Automatic}}, "Rows" -> {{0}}}], 
+       "Column"], TraditionalForm], {3.5, 7.5}], 
+    InsetBox[
+     FormBox[
+      TagBox[
+       GridBox[{{
+          StyleBox["\"14\"", 12, Bold, StripOnInput -> False]}, {
+          StyleBox["\"\[RightArrow]\"", 12, Bold, StripOnInput -> False]}}, 
+        GridBoxAlignment -> {"Columns" -> {{Center}}}, DefaultBaseStyle -> 
+        "Column", 
+        GridBoxItemSize -> {
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+        GridBoxSpacings -> {"Columns" -> {{Automatic}}, "Rows" -> {{0}}}], 
+       "Column"], TraditionalForm], {3.5, 1.5}]},
+  Frame->False,
+  FrameLabel->{None, None},
+  FrameTicks->{{None, None}, {None, None}},
+  GridLinesStyle->Directive[
+    GrayLevel[0.5, 0.4]],
+  ImageSize->{513.5294117647054, Automatic},
+  Method->{
+   "GridLinesInFront" -> True, "DefaultBoundaryStyle" -> Automatic, 
+    "DefaultGraphicsInteraction" -> {
+     "Version" -> 1.2, "TrackMousePosition" -> {True, False}, 
+      "Effects" -> {
+       "Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, 
+        "Droplines" -> {
+         "freeformCursorMode" -> True, 
+          "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultPlotStyle" -> 
+    Automatic}]], "Input",ExpressionUUID->"bbff441e-334d-3c42-b897-\
+391c8623b6db"]
+},
+WindowSize->{1111.5, 559.5},
+WindowMargins->{{Automatic, -1209.75}, {Automatic, -88.5}},
+Magnification:>0.75 Inherited,
+FrontEndVersion->"14.1 for Microsoft Windows (64-bit) (July 16, 2024)",
+StyleDefinitions->"Chatbook.nb",
+ExpressionUUID->"a5037d18-8713-c243-80c1-9be779f92456"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[554, 20, 38572, 1097, 394, "Input",ExpressionUUID->"bbff441e-334d-3c42-b897-391c8623b6db"]
+}
+]
+*)
+

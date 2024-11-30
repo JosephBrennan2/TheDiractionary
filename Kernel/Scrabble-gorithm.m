@@ -7,14 +7,13 @@ RunVersion2Scrabblegorithm;
 CreateInitialScrabbleBoard;
 CheckForBlanksUsed;
 UpdateScrabbleBoard;
-AdjacentChannels;
 FindStartingSquares;
 FindPossibleOverlapPositions;
 ForbiddenSquares;
 UpdateForbiddenSquares;
 Battleship;
-ForbiddenSquaresPlayingDown;
-ForbiddenSquaresPlayingRight;
+CushionedBattleship;
+
 
 (*https://www.reddit.com/r/scrabble/comments/my5tie/the_419_words_erased_from_csw/*)
 
@@ -272,15 +271,8 @@ UpdateScrabbleBoard[word_, pos_List, direction_String : ("Right" | "Down"), epil
       Join[epilog, epilogState]
     ]
 
-(* Finds adjacent rows or columns to avoid. *)
-AdjacentChannels[list_List] := 
-Flatten[
-    Table[
-       Select[{n - 1, n, n + 1}, 1 <= # <= 15 &],
-       {n, list}
-     ]
-  ]
 
+(* Finds list of starting positions of a word that overlaps another already played word. *)
 FindStartingSquares[boardRow_Integer, boardCol_Integer, retrace_, toTile_, dirOfPlay_] := 
  Module[{posList},
   If[dirOfPlay == "Down", posList = {ToUpperCase[FromLetterNumber[boardRow - retrace]], boardCol + toTile};
@@ -292,40 +284,50 @@ FindStartingSquares[boardRow_Integer, boardCol_Integer, retrace_, toTile_, dirOf
 
 (* 
    Takes the current Master Association, the word to be played, and the possible options for the overlap tile,
-   and returns an association in the form:
-   <| "Down" -> <| "OverlapTileOption" -> {pos1, pos2, ...} |>, "Right" -> ... |>
+   and finds an association in the form:
+   <| "Down" -> <| "OverlapTileOption" -> {pos1, pos2, ...} |>, "Right" -> <|...|> |>
+   Then returns a list of valid 'overlap vectors' subject to board constraints.
 *)
-
 FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
-   Module[{overlapAssoc = <|"Down" -> <||>, "Right" -> <||>|>, overlapVectors, forbiddenSquares, overlapSquaresAssoc},
+   Module[{overlapAssoc = <|"Down" -> <||>, "Right" -> <||>|>, overlapVectors, overlapSquaresAssoc},
       Map[ (* Map over overlap tiles. *)
          Function[{tile},
             Map[ (* Map over played bingos. *)
                Function[{i},
-                  Module[{direction, boardRow, boardCol,
+                  Module[{direction, boardRow, boardCol, bingo = assoc[[i]]["Bingo"],
                           toTile, retrace,
                           avoidCols, posListDown, filterPosListDown,
                           avoidRows, posListRight, filterPosListRight
                       },             
-                      direction = Values[assoc][[All, "Direction"]][[i]];
-                      {boardRow, boardCol} = Values[assoc][[All, "Position"]][[i]];
+                      direction = assoc[[i]]["Direction"]; (* Find direction of played bingo. *)
+                      {boardRow, boardCol} = assoc[[i]]["Position"]; (* Find position of played bingo. *)
                       boardRow = LetterNumber[boardRow];
-                      toTile = StringPosition[Values[assoc][[All, "Bingo"]][[i]], tile][[All, 1]] - 1;             
-                      retrace = StringPosition[word, tile][[All, 1]] - 1;
+                      toTile = StringPosition[assoc[[i]]["Bingo"], tile][[All, 1]] - 1; (* Find position of overlap tile within played bingo. *)    
+                      retrace = StringPosition[word, tile][[All, 1]] - 1; (* Find position of overlap tile within new bingo. *) 
 
-                      (* Play "Down" through this word, as it is directed to the "Right". *)
+                      (* Play "Down" through this already-played word, as it is directed to the "Right". *)
                       If[direction == "Right",
-                        avoidCols = Values[Select[assoc, #["Direction"] == "Down" &][[All, "Position"]]][[All, 2]];     
+                        avoidCols = Values[Select[assoc, #["Direction"] == "Down" &][[All, "Position"]]][[All, 2]]; (* Do not play "Down" through existing "Down" bingos. *)   
                         posListDown = FindStartingSquares[boardRow, boardCol, retrace, toTile, "Down"];
                         filterPosListDown = Select[posListDown, FreeQ[avoidCols, #[[2]]] && LetterNumber[#[[1]]] <= 8 && LetterNumber[#[[1]]] >= 1 &];
-                        If[filterPosListDown =!= {}, overlapAssoc["Down", tile] = Join[Lookup[overlapAssoc["Down"], tile, {}], filterPosListDown]
-                         ],
+
+                        If[filterPosListDown =!= {},
+                          If[! KeyExistsQ[overlapAssoc["Down"], tile], overlapAssoc["Down"][tile] = <||>];
+                          If[! KeyExistsQ[overlapAssoc["Down"][tile], bingo], overlapAssoc["Down"][tile][bingo] = {}];
+                        ];
+                        If[filterPosListDown =!= {} && KeyExistsQ[overlapAssoc["Down"][tile], bingo], overlapAssoc["Down"][tile][bingo] = Join[overlapAssoc["Down"][tile][bingo], filterPosListDown]
+                         ], (* Update overlapAssoc. *)
                         
-                        (* Else, play "Right" through this word, as it is directed "Down". *)
-                        avoidRows = Values[Select[assoc, #["Direction"] == "Right" &][[All, "Position"]]][[All, 1]];
+                      (* Else, play "Right" through this already-played word, as it is directed "Down". *)
+                        avoidRows = Values[Select[assoc, #["Direction"] == "Right" &][[All, "Position"]]][[All, 1]]; (* Do not play "Right" through existing "Right" bingos. *)   
                         posListRight = FindStartingSquares[boardRow, boardCol, retrace, toTile, "Right"];
                         filterPosListRight = Select[posListRight, FreeQ[avoidRows, #[[1]]] && #[[2]] > 0 && #[[2]] <= 8 &];
-                        If[filterPosListRight =!= {}, overlapAssoc["Right", tile] = Join[Lookup[overlapAssoc["Right"], tile, {}], filterPosListRight]
+
+                        If[filterPosListRight =!= {},
+                          If[! KeyExistsQ[overlapAssoc["Right"], tile], overlapAssoc["Right"][tile] = <||>];
+                          If[! KeyExistsQ[overlapAssoc["Right"][tile], bingo], overlapAssoc["Right"][tile][bingo] = {}];
+                        ];
+                        If[filterPosListRight =!= {} && KeyExistsQ[overlapAssoc["Right"][tile], bingo], overlapAssoc["Right"][tile][bingo] = Join[overlapAssoc["Right"][tile][bingo], filterPosListRight]
                          ]
                       ]
                    ]
@@ -335,22 +337,18 @@ FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
           ],
          overlapTileOptions
        ];
-      overlapAssoc = Select[overlapAssoc, # =!= <||> &];
-      overlapVectors = Flatten[Table[{#, dir, tile} & /@ overlapAssoc[dir, tile], {dir, Keys[overlapAssoc]}, {tile, Keys[overlapAssoc[dir]]}], 2];
+      overlapAssoc = Select[overlapAssoc, # =!= <||> &]; (* E.g. after turn 1 there will be no "Right" overlaps. *)
+      overlapVectors = Flatten[Table[{#, dir, tile, bingo} & /@ overlapAssoc[dir][tile][bingo], {dir, Keys[overlapAssoc]}, {tile, Keys[overlapAssoc[dir]]}, {bingo, Keys[overlapAssoc[dir, tile]]}], 3]; (* Obtain all combinations of position, direction, and tile. *)
 
-      
+      (* For each vector, where is it overlapping with 'forbidden' squares? *)
       overlapSquaresAssoc = Map[
         # -> Intersection[
           Battleship[word, #[[1]], #[[2]]], 
-          If[#[[2]] == "Right", UpdateForbiddenSquares[assoc, "Right"], UpdateForbiddenSquares[assoc, "Down"]]
-          ] &, 
+          UpdateForbiddenSquares[assoc, #[[4]]]
+        ] &, 
           overlapVectors
-          ];
-
-
-      If[overlapSquaresAssoc =!= {}, overlapSquaresAssoc];
-
-      Keys[Select[overlapSquaresAssoc, Length[Values[#]] == 1 &]]
+      ];
+      Keys[Select[overlapSquaresAssoc, Length[Values[#]] == 1 &]] (* Select overlap vectors that overlap exactly one square. *)
     ]
 
 
@@ -361,6 +359,15 @@ Battleship[word_, startPos_, direction_] :=
     If[direction === "Right",
       Table[{row, col + i}, {i, 0, length - 1}],
       Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col}, {i, 0, length - 1}]
+  ]
+ ]
+
+CushionedBattleship[word_, startPos_, direction_] :=
+ Module[{row, col, length = StringLength[word]},
+    {row, col} = startPos;
+    If[direction === "Right",
+      Table[{row, col + i}, {i, -1, length}],
+      Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col}, {i, -1, length}]
   ]
  ]
 
@@ -384,58 +391,27 @@ ForbiddenSquares[word_, startPos_, direction_] :=
    ]
   ]
 
-
-UpdateForbiddenSquares[assoc_, direction_] :=
- DeleteDuplicates[
-  Flatten[
-   Values[
-      Map[
-     With[{word = #["Bingo"], pos = #["Position"], 
-        dir = #["Direction"]},
-             If[direction == "Right", ForbiddenSquaresPlayingRight[word, pos, dir], ForbiddenSquaresPlayingDown[word, pos, dir]]
-           ] &,
-         assoc
-       ]
-    ],
-   1
+UpdateForbiddenSquares[assoc_, bingo_] :=
+  DeleteDuplicates[
+   Flatten[
+    Values[
+     Map[
+      With[{word = #["Bingo"], pos = #["Position"], 
+         dir = #["Direction"]},
+        
+        If[word == bingo, CushionedBattleship[word, pos, dir], 
+         ForbiddenSquares[word, pos, dir]]
+        ] &,
+      assoc
+      ]
+     ],
+    1
+    ]
    ]
-  ]
 
-(* Find forbidden squares for a given word in assoc, if the current word is being played to the right. *)
-ForbiddenSquaresPlayingRight[word_, startPos_, direction_] :=
- Module[{row, col, length = StringLength[word], 
-    mainPositions, 
-    abovePositions, belowPositions
-   },
-    {row, col} = startPos;
-    If[direction === "Right",
-      mainPositions = Table[{row, col + i}, {i, -1, length}];
-      abovePositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] - 1]], col + i}, {i, 0, length - 1} ];
-      belowPositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + 1]], col + i}, {i, 0, length - 1} ];
-      Join[mainPositions, abovePositions, belowPositions],
-   
-      mainPositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col}, {i, -1, length}];
-      mainPositions
-   ]
-  ]
 
-(* Find forbidden squares for a given word in assoc, if the current word is being played down. *)
-ForbiddenSquaresPlayingDown[word_, startPos_, direction_] :=
- Module[{row, col, length = StringLength[word], 
-    mainPositions, 
-    leftPositions, rightPositions
-   },
-    {row, col} = startPos;
-    If[direction === "Right",
-      mainPositions = Table[{row, col + i}, {i, -1, length}];
-      mainPositions,
-   
-      mainPositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col}, {i, -1, length}];
-      leftPositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col - 1}, {i, 0, length - 1}];
-      rightPositions = Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col + 1}, {i, 0, length - 1}];
-      Join[mainPositions, leftPositions, rightPositions]
-   ]
-  ]
+
+
 
 
 End[]

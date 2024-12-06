@@ -13,6 +13,8 @@ ForbiddenSquares;
 UpdateForbiddenSquares;
 Battleship;
 CushionedBattleship;
+IdentifyBlank;
+FormatWordWithBlank;
 
 
 (*https://www.reddit.com/r/scrabble/comments/my5tie/the_419_words_erased_from_csw/*)
@@ -72,7 +74,7 @@ RunVersion1Scrabblegorithm[iterations_] :=
      word = wordsByLength[7][[i]];
      If[Length[bingos] < 12, b = 0, b = 1];
      newRemainingCounts = UpdateRemainingTileCount[remainingCounts, word, b];
-     If[newRemainingCounts === remainingCounts, If[i==Length[wordsByLength[7]],Print["No Valid Words"]]; i++, 
+     If[newRemainingCounts === remainingCounts, If[i == Length[wordsByLength[7]], Print["No Valid Words"]]; i++, 
       negativeKeys = Select[Keys[newRemainingCounts], newRemainingCounts[#] < 0 &];
       If[negativeKeys =!= {}, AppendTo[blanks, negativeKeys[[1]]]; newRemainingCounts[negativeKeys[[1]]] = 0;];
       AppendTo[bingos, word];
@@ -168,7 +170,7 @@ RunVersion2Scrabblegorithm[iterations_] :=
      				];
     				overlapTile = RandomChoice[overlapOptions];
     				newRemainingCounts = UpdateRemainingTileCount[remainingCounts, StringJoin[DeleteElements[Characters[word], 1 -> {overlapTile}]], b];
-    				If[newRemainingCounts === remainingCounts,
+    				If[newRemainingCounts === remainingCounts,  If[i == Length[wordsByLength[8]], Print["No Valid Words"]];
      					i++,
               blankTileList = Select[Keys[newRemainingCounts], newRemainingCounts[#] < 0 &];
      					If[blankTileList =!= {},
@@ -205,7 +207,6 @@ RunVersion2Scrabblegorithm[iterations_] :=
    		{j, 1, iterations}
    		]
   	]
-
 
 (* Create Graphic of an Empty Scrabble Board. *)
 CreateInitialScrabbleBoard[] := 
@@ -409,7 +410,14 @@ UpdateForbiddenSquares[assoc_, bingo_] :=
     ]
    ]
 
+(* Uses 'blankAssoc' to retrieve the blank required for this play. *)
+IdentifyBlank[overlapVector_, blankAssoc_] := SelectFirst[blankAssoc, #["Overlap"] == overlapVector[[3]] &]["Blank"]
 
+(* Must change this from being a random choice. *)
+FormatWordWithBlank[word_, blank_] := 
+Module[{blankIndex = RandomChoice[StringPosition[word, blank]][[1]]},
+StringReplacePart[word, ToLowerCase[blank], Table[blankIndex, 2]]
+]
 
 
 

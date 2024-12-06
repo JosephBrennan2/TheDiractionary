@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       154,          7]
-NotebookDataLength[    418579,       8446]
-NotebookOptionsPosition[    412824,       8352]
-NotebookOutlinePosition[    413261,       8369]
-CellTagsIndexPosition[    413218,       8366]
+NotebookDataLength[    419970,       8474]
+NotebookOptionsPosition[    413989,       8376]
+NotebookOutlinePosition[    414426,       8393]
+CellTagsIndexPosition[    414383,       8390]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -7992,12 +7992,12 @@ resemble a feasible game of Scrabble.
 It was at this point I needed some way to visualize the turns on a \
 \[OpenCurlyQuote]real\[CloseCurlyQuote] board, so I created some utility \
 functions. 
-The first\[LongDash]CreateInitialScrabbleBoard\[LongDash] uses the ArrayPlot \
+The first\[LongDash]CreateInitialScrabbleBoard\[LongDash]uses the ArrayPlot \
 function with some custom ColorRules to recreate a Graphics object in the \
 style of an empty Scrabble board. It requires zero arguments.
 The second\[LongDash]UpdateScrabbleBoard\[LongDash]employs a neat trick where \
 it simply updates a list of graphics primitives representing tiles. This list \
-can then be used as the Epilog for the result of CreateInitialScrabbleBoard! \
+can then be used as the Epilog for the result of CreateInitialScrabbleBoard. \
 Therefore, successive uses of UpdateScrabbleBoard correspond to overlaying \
 the tiles on a turn-by-turn basis, concordant with how words are played in \
 the real game. This function requires the word, the board position of the \
@@ -8017,8 +8017,8 @@ the numbers 1 to 15.\
   3.9414623111257744`*^9}, {3.9414623465809383`*^9, 3.941462426960739*^9}, {
   3.9414624898617935`*^9, 3.9414626225998917`*^9}, {3.941462663887974*^9, 
   3.9414627060809803`*^9}, {3.9414629891569386`*^9, 3.941463081843029*^9}, {
-  3.94146314395776*^9, 
-  3.9414631979562645`*^9}},ExpressionUUID->"1820e58e-6870-2c49-8523-\
+  3.94146314395776*^9, 3.9414631979562645`*^9}, {3.942080190329645*^9, 
+  3.9420802169059105`*^9}},ExpressionUUID->"1820e58e-6870-2c49-8523-\
 659820e02ad9"],
 
 Cell[CellGroupData[{
@@ -8214,12 +8214,12 @@ wZbfh4p7UO0fbT8PDncOvvAkVf3g8u/o+AZ+cVLDZ6i0Q4bueB0AdOt7Xg==
 }, Open  ]],
 
 Cell["\<\
-I have just picked the position so that the overlap works. How to get around \
-this?\
+In the example above, I have simply picked the position so that the overlap \
+works. How to get around this?\
 \>", "Item",
  CellChangeTimes->{{3.941463222592287*^9, 3.941463245821348*^9}, {
-  3.941463330875799*^9, 
-  3.9414633308777847`*^9}},ExpressionUUID->"37cd17ab-7ccc-e140-b8bf-\
+  3.941463330875799*^9, 3.9414633308777847`*^9}, {3.942080145233513*^9, 
+  3.9420801545056057`*^9}},ExpressionUUID->"37cd17ab-7ccc-e140-b8bf-\
 fefff6a26c29"],
 
 Cell["\<\
@@ -8303,9 +8303,33 @@ Cell["Discuss how Wolfram Language made this a breeze.", "Item",
   3.939267584934164*^9, {3.9392676345879154`*^9, 3.939267709658455*^9}, {
    3.9392677893266983`*^9, 3.9392678232595882`*^9}, {3.939267863737892*^9, 
    3.9392680400838165`*^9}, {3.9392680850247173`*^9, 
-   3.9392681464357357`*^9}, {3.939921135368927*^9, 
-   3.9399211353729286`*^9}},ExpressionUUID->"f29738aa-fa96-4641-951f-\
+   3.9392681464357357`*^9}, {3.939921135368927*^9, 3.9399211353729286`*^9}, {
+   3.9420800642459393`*^9, 
+   3.9420800642477207`*^9}},ExpressionUUID->"f29738aa-fa96-4641-951f-\
 a1210ec800c8"],
+
+Cell[CellGroupData[{
+
+Cell["Where I can see this being extended:", "Item",
+ CellChangeTimes->{
+  3.939267584934164*^9, {3.9392676345879154`*^9, 3.939267709658455*^9}, {
+   3.9392677893266983`*^9, 3.9392678232595882`*^9}, {3.939267863737892*^9, 
+   3.9392680400838165`*^9}, {3.9392680850247173`*^9, 
+   3.9392681464357357`*^9}, {3.939921135368927*^9, 3.9399211353729286`*^9}, {
+   3.9420800656179256`*^9, 
+   3.9420800728389015`*^9}},ExpressionUUID->"1dbc991e-fcc0-d847-a90f-\
+ec9bef8effe3"],
+
+Cell["Encoded preferential/probabilistic bingo selection.", "Subitem",
+ CellChangeTimes->{
+  3.939267584934164*^9, {3.9392676345879154`*^9, 3.939267709658455*^9}, {
+   3.9392677893266983`*^9, 3.9392678232595882`*^9}, {3.939267863737892*^9, 
+   3.9392680400838165`*^9}, {3.9392680850247173`*^9, 
+   3.9392681464357357`*^9}, {3.939921135368927*^9, 3.9399211353729286`*^9}, {
+   3.9420800656179256`*^9, 
+   3.942080109208843*^9}},ExpressionUUID->"5401c478-a5b8-2747-9ba7-\
+2f40e4495cdb"]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -8422,30 +8446,34 @@ Cell[289632, 6022, 108446, 1955, 1159, "Text",ExpressionUUID->"3633436c-ee5e-c24
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[398115, 7982, 179, 3, 47, "Subsection",ExpressionUUID->"ee0e0f21-22c7-0f41-98ca-2fa17acef5a2"],
-Cell[398297, 7987, 2215, 34, 148, "Text",ExpressionUUID->"1820e58e-6870-2c49-8523-659820e02ad9"],
+Cell[398297, 7987, 2262, 34, 148, "Text",ExpressionUUID->"1820e58e-6870-2c49-8523-659820e02ad9"],
 Cell[CellGroupData[{
-Cell[400537, 8025, 884, 23, 76, "Input",ExpressionUUID->"db137b41-d7af-9447-973c-5f74c4df8aaa"],
-Cell[401424, 8050, 5883, 162, 338, "Output",ExpressionUUID->"fca244fc-9eb8-7048-879c-ff29c6e00504"]
+Cell[400584, 8025, 884, 23, 76, "Input",ExpressionUUID->"db137b41-d7af-9447-973c-5f74c4df8aaa"],
+Cell[401471, 8050, 5883, 162, 338, "Output",ExpressionUUID->"fca244fc-9eb8-7048-879c-ff29c6e00504"]
 }, Open  ]],
-Cell[407322, 8215, 285, 7, 27, "Item",ExpressionUUID->"37cd17ab-7ccc-e140-b8bf-fefff6a26c29"],
-Cell[407610, 8224, 298, 7, 27, "Item",ExpressionUUID->"b472576a-c7f6-9641-a349-9b5f26ba423c"],
-Cell[407911, 8233, 348, 7, 27, "Item",ExpressionUUID->"21661b7b-8b6a-bb41-bd55-52e21da122b9"],
-Cell[408262, 8242, 301, 4, 27, "Item",ExpressionUUID->"e1aebc4d-88ac-6240-9295-4375e65bfdd1"],
-Cell[408566, 8248, 213, 5, 27, "Item",ExpressionUUID->"f5ff3b26-3151-674a-b6e3-ba3508406f0f"],
-Cell[408782, 8255, 421, 8, 27, "Item",ExpressionUUID->"4839e62d-13b5-f844-8f30-b780dedc8b6d"],
-Cell[409206, 8265, 240, 4, 27, "Item",ExpressionUUID->"e091cf58-5e58-be45-b6bd-af56c2c8b4f8"]
+Cell[407369, 8215, 357, 7, 27, "Item",ExpressionUUID->"37cd17ab-7ccc-e140-b8bf-fefff6a26c29"],
+Cell[407729, 8224, 298, 7, 27, "Item",ExpressionUUID->"b472576a-c7f6-9641-a349-9b5f26ba423c"],
+Cell[408030, 8233, 348, 7, 27, "Item",ExpressionUUID->"21661b7b-8b6a-bb41-bd55-52e21da122b9"],
+Cell[408381, 8242, 301, 4, 27, "Item",ExpressionUUID->"e1aebc4d-88ac-6240-9295-4375e65bfdd1"],
+Cell[408685, 8248, 213, 5, 27, "Item",ExpressionUUID->"f5ff3b26-3151-674a-b6e3-ba3508406f0f"],
+Cell[408901, 8255, 421, 8, 27, "Item",ExpressionUUID->"4839e62d-13b5-f844-8f30-b780dedc8b6d"],
+Cell[409325, 8265, 240, 4, 27, "Item",ExpressionUUID->"e091cf58-5e58-be45-b6bd-af56c2c8b4f8"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[409483, 8274, 154, 3, 46, "Subtitle",ExpressionUUID->"d0fa0bc0-a02a-bb4e-bb4a-08c62cb363f7"],
-Cell[409640, 8279, 652, 12, 63, "Item",ExpressionUUID->"015b2947-92f9-0e4f-bf14-5e89a1495561"],
-Cell[410295, 8293, 227, 5, 27, "Item",ExpressionUUID->"463e7198-5472-5a44-81b5-d077f3075078"],
-Cell[410525, 8300, 426, 7, 27, "Item",ExpressionUUID->"f29738aa-fa96-4641-951f-a1210ec800c8"],
+Cell[409602, 8274, 154, 3, 46, "Subtitle",ExpressionUUID->"d0fa0bc0-a02a-bb4e-bb4a-08c62cb363f7"],
+Cell[409759, 8279, 652, 12, 63, "Item",ExpressionUUID->"015b2947-92f9-0e4f-bf14-5e89a1495561"],
+Cell[410414, 8293, 227, 5, 27, "Item",ExpressionUUID->"463e7198-5472-5a44-81b5-d077f3075078"],
+Cell[410644, 8300, 480, 8, 27, "Item",ExpressionUUID->"f29738aa-fa96-4641-951f-a1210ec800c8"],
 Cell[CellGroupData[{
-Cell[410976, 8311, 428, 7, 27, "Item",ExpressionUUID->"be9d9d58-8fa0-3b46-aa71-213887f49716"],
-Cell[411407, 8320, 434, 7, 23, "Subitem",ExpressionUUID->"6e5ebe2a-975b-5340-9103-3cdd7df9b811"],
-Cell[411844, 8329, 458, 8, 23, "Subitem",ExpressionUUID->"696d39bc-c667-334a-9ffc-107a245fc044"]
+Cell[411149, 8312, 468, 8, 27, "Item",ExpressionUUID->"1dbc991e-fcc0-d847-a90f-ec9bef8effe3"],
+Cell[411620, 8322, 484, 8, 23, "Subitem",ExpressionUUID->"5401c478-a5b8-2747-9ba7-2f40e4495cdb"]
 }, Open  ]],
-Cell[412317, 8340, 479, 8, 27, "Item",ExpressionUUID->"7f990204-3ca1-1342-9254-d71213b2ae21"]
+Cell[CellGroupData[{
+Cell[412141, 8335, 428, 7, 27, "Item",ExpressionUUID->"be9d9d58-8fa0-3b46-aa71-213887f49716"],
+Cell[412572, 8344, 434, 7, 23, "Subitem",ExpressionUUID->"6e5ebe2a-975b-5340-9103-3cdd7df9b811"],
+Cell[413009, 8353, 458, 8, 23, "Subitem",ExpressionUUID->"696d39bc-c667-334a-9ffc-107a245fc044"]
+}, Open  ]],
+Cell[413482, 8364, 479, 8, 27, "Item",ExpressionUUID->"7f990204-3ca1-1342-9254-d71213b2ae21"]
 }, Open  ]]
 }, Open  ]]
 }

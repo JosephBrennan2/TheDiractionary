@@ -13,8 +13,9 @@ ForbiddenSquares;
 UpdateForbiddenSquares;
 Battleship;
 CushionedBattleship;
-IdentifyBlank;
-FormatWordWithBlank;
+IdentifyBlanks;
+FormatWordWithBlanks;
+BlanksAllowed;
 
 
 (*https://www.reddit.com/r/scrabble/comments/my5tie/the_419_words_erased_from_csw/*)
@@ -32,7 +33,9 @@ UpdateRemainingTileCount[remainingCounts_, word_, blanks_] :=
   	    charCounts = Counts[Characters[word]];
   	    newCounts = Merge[{remainingCounts, Map[(# -> (remainingCounts[#] - charCounts[#])) &, tiles]}, Last];
   
-        blanksNeeded = Count[Values[newCounts], x_ /; x < 0];
+        (*blanksNeeded = Count[Values[newCounts], x_ /; x < 0]*)
+
+        blanksNeeded = Abs[Total[Select[Values[newCounts], # < 0 &]]];
   	   
   	    If[blanksNeeded <= blanks && Min[Values[newCounts]] >= -blanks,
    		    newCounts["?"] = newCounts["?"] - blanksNeeded;
@@ -269,7 +272,7 @@ UpdateScrabbleBoard[word_, pos_List, direction_String : ("Right" | "Down"), epil
            {i, length}
          ]
    ];
-      Join[epilog, epilogState]
+      Join[epilogState, epilog]
     ]
 
 
@@ -411,14 +414,39 @@ UpdateForbiddenSquares[assoc_, bingo_] :=
    ]
 
 (* Uses 'blankAssoc' to retrieve the blank required for this play. *)
-IdentifyBlank[overlapVector_, blankAssoc_] := SelectFirst[blankAssoc, #["Overlap"] == overlapVector[[3]] &]["Blank"]
+IdentifyBlanks[overlapVector_, blankAssoc_] := SelectFirst[blankAssoc, #["Overlap"] == overlapVector[[3]] &]["Blank"]
 
-(* Must change this from being a random choice. *)
-FormatWordWithBlank[word_, blank_] := 
-Module[{blankIndex = RandomChoice[StringPosition[word, blank]][[1]]},
-StringReplacePart[word, ToLowerCase[blank], Table[blankIndex, 2]]
-]
+(*FormatWordWithBlanks[word_, blanks_] := Module[{formatWord = word},
+  Map[
+   Module[
+     {blankIndex = RandomChoice[StringPosition[word, #]][[1]]},
+     formatWord = 
+      StringReplacePart[formatWord, ToLowerCase[#], 
+       Table[blankIndex, 2]]
+     ] &,
+   blanks];
+  Return[formatWord]
+  ]
+  *)
 
+FormatWordWithBlanks[word_, blanks_] := Module[{formatWord = word},
+    Map[
+       Module[{blankIndices = StringPosition[word, #][[All, 1]]},
+     formatWord = 
+      StringReplacePart[formatWord, 
+       ToLowerCase[#], {#, #} & /@ blankIndices]
+         ] &,
+       blanks
+     ];
+    Return[formatWord]
+  ]
+
+
+BlanksAllowed[assoc_, usedCounts_] := 
+ Module[{blanksUsed = usedCounts["?"], b},
+  If[Length[assoc] == 13 && blanksUsed == 0, b = 2, b = 1];
+  Return[b]
+  ]
 
 
 

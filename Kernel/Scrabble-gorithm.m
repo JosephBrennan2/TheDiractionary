@@ -416,25 +416,12 @@ UpdateForbiddenSquares[assoc_, bingo_] :=
 (* Uses 'blankAssoc' to retrieve the blank required for this play. *)
 IdentifyBlanks[overlapVector_, blankAssoc_] := SelectFirst[blankAssoc, #["Overlap"] == overlapVector[[3]] &]["Blank"]
 
-(*FormatWordWithBlanks[word_, blanks_] := Module[{formatWord = word},
-  Map[
-   Module[
-     {blankIndex = RandomChoice[StringPosition[word, #]][[1]]},
-     formatWord = 
-      StringReplacePart[formatWord, ToLowerCase[#], 
-       Table[blankIndex, 2]]
-     ] &,
-   blanks];
-  Return[formatWord]
-  ]
-  *)
-
 FormatWordWithBlanks[word_, blanks_] := Module[{formatWord = word},
     Map[
-       Module[{blankIndices = StringPosition[word, #][[All, 1]]},
-     formatWord = 
-      StringReplacePart[formatWord, 
-       ToLowerCase[#], {#, #} & /@ blankIndices]
+       Module[
+        {blankIndices = StringPosition[word, #][[All, 1]]},
+      If[Length[blankIndices] > Count[blanks, #], blankIndices = {RandomChoice[blankIndices]}];
+     formatWord = StringReplacePart[formatWord, ToLowerCase[#], {#, #} & /@ blankIndices]
          ] &,
        blanks
      ];

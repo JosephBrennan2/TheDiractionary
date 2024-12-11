@@ -16,6 +16,8 @@ CushionedBattleship;
 IdentifyBlanks;
 FormatWordWithBlanks;
 BlanksAllowed;
+RunScrabblegorithm;
+
 
 
 (*https://www.reddit.com/r/scrabble/comments/my5tie/the_419_words_erased_from_csw/*)
@@ -32,11 +34,7 @@ UpdateRemainingTileCount[remainingCounts_, word_, blanks_] :=
  	Module[{tiles = Characters[word], charCounts, newCounts, blanksNeeded},
   	    charCounts = Counts[Characters[word]];
   	    newCounts = Merge[{remainingCounts, Map[(# -> (remainingCounts[#] - charCounts[#])) &, tiles]}, Last];
-  
-        (*blanksNeeded = Count[Values[newCounts], x_ /; x < 0]*)
-
         blanksNeeded = Abs[Total[Select[Values[newCounts], # < 0 &]]];
-  	   
   	    If[blanksNeeded <= blanks && Min[Values[newCounts]] >= -blanks,
    		    newCounts["?"] = newCounts["?"] - blanksNeeded;
    	        Return[newCounts],
@@ -428,12 +426,220 @@ FormatWordWithBlanks[word_, blanks_] := Module[{formatWord = word},
     Return[formatWord]
   ]
 
-
 BlanksAllowed[assoc_, usedCounts_] := 
  Module[{blanksUsed = usedCounts["?"], b},
-  If[Length[assoc] == 13 && blanksUsed == 0, b = 2, b = 1];
+ If[Length[assoc] < 12, b = 0,
+   If[Length[assoc] == 13 && blanksUsed == 0, b = 2, b = 1]
+ ];
   Return[b]
   ]
+
+
+RunScrabblegorithm[] :=
+Module[
+  {
+  wordsByLength = GroupBy[RandomSample[Import["CSW21.txt", "List"]], StringLength],
+  board = CreateInitialScrabbleBoard[], (* Create Graphic of Empty Scrabble Board. *)
+  assoc = <||>
+  },
+  i = 1;
+  While[Length[assoc] < 14,
+    (* Turn 1. *)
+    While[Length[assoc] == 0,
+      remainingCounts = tiles[[All, "Quantity"]]; (* Whole tile bag remaining. *)
+      usedCounts = AssociationThread[Keys[tiles], Table[0, 27]]; (* Initially zero tiles have been used. *)
+      b = BlanksAllowed[assoc, usedCounts];
+      Module[{next = False},
+        pos = {"H", 2};
+        word = wordsByLength[7][[i]];
+        If[UpdateRemainingTileCount[remainingCounts, word, b] === tiles[[All, "Quantity"]], (* Starting 7-letter word must not require blanks. *)
+          Print[word, ": Choose another Starter"];
+          next = True
+          ];
+        Module[{boardTurn1},
+          boardTurn1 =
+            Row[{
+              DynamicModule[
+                {currentBoard = board, localEpilogState},
+                localEpilogState = UpdateScrabbleBoard[word, pos, "Right", {}];
+                Column[{
+                  Show[currentBoard, ImageSize -> 300, Epilog -> localEpilogState],
+                  Button[
+                    "Select",
+                    AppendTo[assoc, 1 -> <|"Bingo" -> word, "Position" -> pos, "Direction" -> "Right"|>];
+                    remainingCounts = UpdateRemainingTileCount[remainingCounts, word, b];
+                    usedCounts = UpdateUsedTileCount[usedCounts, word];
+                    epilogState = localEpilogState;
+                    next = True;(* Flag is set to True when selected *)
+                    Print["Tiles Used: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]], " ", StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]]];
+                    Print["Tiles Left: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]], " ", StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]]];
+                    NotebookDelete[EvaluationCell[]];
+                  ]
+                }]
+              ],
+              Button["Skip", next = True; NotebookDelete[EvaluationCell[]]]
+            }];
+          If[next == False, Print[boardTurn1]];
+          WaitUntil[next === True];
+          next = False;
+        ];
+      ];
+    i++;
+    If[i > Length[wordsByLength[7]], Abort[]];
+    If[Length[assoc] == 1, i = 1]
+    ];
+  
+    (* Turns 2-12. *)
+    While[1 <= Length[assoc] < 12,
+      Module[{next = False}, (* Initialize flag. *)
+        word = wordsByLength[8][[i]];
+        overlapTileOptions = Intersection[Characters[word], Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]];
+        If[overlapTileOptions === {}, Print[word, " Has No Overlaps!"]; next = True];
+        b = BlanksAllowed[assoc, usedCounts];
+        Map[ (* Check the remaining counts for each overlap option. *)
+          If[
+            UpdateRemainingTileCount[remainingCounts, StringJoin[DeleteElements[Characters[word], 1 -> {#}]], b] == remainingCounts,
+            overlapTileOptions = DeleteCases[overlapTileOptions, #] (* Keep only options that can be formed with the available tiles. *)
+            ] &, overlapTileOptions
+          ];
+        If[overlapTileOptions === {}, next = True];
+        overlapVectors = FindPossibleOverlapPositions[assoc, word, overlapTileOptions];
+        If[overlapVectors === {}, next = True];
+        possibleEpilogs = AssociationMap[UpdateScrabbleBoard[word, #[[1]], #[[2]], epilogState] &, overlapVectors];
+          
+        Module[{boardOptions},
+          boardOptions =
+            Row[
+              Join[
+                Table[
+                  DynamicModule[
+                    {currentBoard = board, localEpilogState, dIdx = idx},
+                    localEpilogState = possibleEpilogs[overlapVectors[[idx]]];
+                    Column[{  
+                      Show[currentBoard, ImageSize -> 300, Epilog -> Dynamic[localEpilogState]],
+                      Button[
+                        "Select",
+                        AppendTo[assoc, Length[assoc] + 1 -> <|"Bingo" -> word, "Position" -> overlapVectors[[dIdx]][[1]], "Direction" -> overlapVectors[[dIdx]][[2]], "Overlap" -> overlapVectors[[dIdx]][[3]]|>];
+                        remainingCounts = UpdateRemainingTileCount[remainingCounts, StringJoin[DeleteElements[Characters[word], 1 -> {overlapVectors[[dIdx]][[3]]}]], b];
+                        usedCounts = UpdateUsedTileCount[usedCounts, StringJoin[DeleteElements[Characters[word], 1 -> {overlapVectors[[dIdx]][[3]]}]]];
+                        epilogState = localEpilogState;
+                        next = True; (* Flag is set to True when selected *)
+                        Print["Tiles Used: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]], " ", StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]]];
+                        Print["Tiles Left: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]], " ", StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]]];
+                        Print["Bingos Checked: ", i];
+                        NotebookDelete[EvaluationCell[]]
+                    ]
+                    }]
+                  ],
+                {idx, Length[overlapVectors]}
+                ],
+              {If[overlapTileOptions =!= {}, 
+                Button["Skip", next = True; NotebookDelete[EvaluationCell[]]], Nothing
+                ]}
+              ]
+            ];
+          If[next == False, Print[boardOptions]];
+          WaitUntil[next === True];
+          next = False;
+        ];
+      ];
+      i++; 
+      If[i == 10000, Print["25% Bingos Checked"]];
+      If[i == 20000, Print["50% Bingos Checked"]];
+      If[i == 30000, Print["75% Bingos Checked"]];
+      If[i > Length[wordsByLength[8]], Abort[]];
+      If[Length[assoc] == 12, i = 1]
+    ];
+  
+  (* Turns 13 and 14. *)
+    Module[{next = False}, (* Initialize flag. *)
+      word = wordsByLength[8][[i]];
+      overlapTileOptions = Intersection[Characters[word], Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]]; 
+      If[overlapTileOptions === {}, Print[word, " Has No Overlaps!"]; next = True];
+      b = BlanksAllowed[assoc, usedCounts];
+      blankAssoc = {};
+        (* Identify blanks and update blankAssoc. *)
+        Map[
+          Module[{newRemainingCounts, negativeKeys},
+            newRemainingCounts = UpdateRemainingTileCount[remainingCounts, StringJoin[DeleteElements[Characters[word], 1 -> {#}]], b];
+            If[newRemainingCounts == remainingCounts,             
+              overlapTileOptions = DeleteCases[overlapTileOptions, #],
+              negativeKeys = Flatten[Table[#, {-newRemainingCounts[#]}] & /@ Select[Keys[newRemainingCounts], newRemainingCounts[#] < 0 &]];
+              If[negativeKeys =!= {},
+                AppendTo[blankAssoc, <|"Overlap" -> #, "Blank" -> negativeKeys|>],
+                AppendTo[blankAssoc, <|"Overlap" -> #, "Blank" -> Null|>]
+              ]
+            ]
+          ] &,
+          overlapTileOptions
+        ];
+      If[overlapTileOptions === {}, next = True];
+      overlapVectors = FindPossibleOverlapPositions[assoc, word, overlapTileOptions];
+      If[overlapVectors === {}, next = True,
+        Echo@word;
+        {overlapVectors, possibleEpilogs} =
+          Module[
+            {vectors, epilogs,
+            blankVectors, wordOptions, blankEpilogs},
+            vectors = Select[overlapVectors, IdentifyBlanks[#, blankAssoc] == Null &];
+            epilogs = AssociationMap[UpdateScrabbleBoard[word, #[[1]], #[[2]], epilogState] &, vectors];
+            blankVectors = Select[overlapVectors, IdentifyBlanks[#, blankAssoc] =!= Null &];
+            blankVectors = Map[Append[#, IdentifyBlanks[#, blankAssoc]] &, blankVectors];
+            wordOptions = AssociationMap[FormatWordWithBlanks[word, IdentifyBlanks[#, blankAssoc]] &, blankVectors];
+            blankEpilogs = AssociationMap[UpdateScrabbleBoard[StringReplace[wordOptions[#], c_ /; LowerCaseQ[c] :> "?"], #[[1]], #[[2]], epilogState] &, blankVectors];
+            {Join[vectors, blankVectors], Join[epilogs, blankEpilogs]}
+          ];
+      ];
+      Module[{boardOptions},
+        boardOptions =
+          Row[
+            Join[
+              Table[
+                DynamicModule[
+                  {currentBoard = board, localEpilogState, dIdx = idx},
+                  localEpilogState = possibleEpilogs[overlapVectors[[idx]]];
+                  Column[{ 
+                    Show[currentBoard, ImageSize -> 300, Epilog -> Dynamic[localEpilogState]],
+                    Button[
+                      "Select",
+                      i = 1;
+                      AppendTo[assoc, Length[assoc] + 1 -> <|"Bingo" -> word, "Position" -> overlapVectors[[dIdx]][[1]], "Direction" -> overlapVectors[[dIdx]][[2]], "Overlap" -> overlapVectors[[dIdx]][[3]]|>];
+                      If[Length[overlapVectors[[dIdx]]] == 5,
+                        usedCounts = UpdateUsedTileCount[usedCounts, StringJoin[DeleteElements[Characters[word], 1 -> Flatten[{overlapVectors[[dIdx]][[3]], overlapVectors[[dIdx]][[5]]}]]]];
+                        remainingCounts = UpdateRemainingTileCount[remainingCounts, StringJoin[DeleteElements[Characters[word], 1 -> {overlapVectors[[dIdx]][[3]]}]], Length[overlapVectors[[dIdx]][[5]]]];
+                        Map[remainingCounts[#]++ &, overlapVectors[[dIdx]][[5]]];
+                        usedCounts["?"] = usedCounts["?"] + Length[overlapVectors[[dIdx]][[5]]],
+                        usedCounts = UpdateUsedTileCount[usedCounts, StringJoin[DeleteElements[Characters[word], 1 -> {overlapVectors[[dIdx]][[3]]}]]];
+                        remainingCounts = UpdateRemainingTileCount[remainingCounts, StringJoin[DeleteElements[Characters[word], 1 -> {overlapVectors[[dIdx]][[3]]}]], 0]
+                      ];
+                      epilogState = localEpilogState;
+                      next = True;(* Flag is set to True when selected *)
+                      Print["Tiles Used: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]], " ", StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, usedCounts]]]];
+                      Print["Tiles Left: ", Length[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]], " ", StringJoin[Flatten[KeyValueMap[Table[#1, #2] &, remainingCounts]]]];
+                      NotebookDelete[EvaluationCell[]]
+                    ]
+                  }]
+                ],
+              {idx, Length[overlapVectors]}
+              ],
+              {If[overlapTileOptions =!= {}, 
+                Button["Skip", next = True; NotebookDelete[EvaluationCell[]]], Nothing
+              ]}
+            ]
+          ];
+        If[next == False, Print[boardOptions]];
+        WaitUntil[next === True];
+        next = False;
+      ];
+    ];
+    i++; 
+    If[i == 10000, Print["25% Bingos Checked"]];
+    If[i == 20000, Print["50% Bingos Checked"]];
+    If[i == 30000, Print["75% Bingos Checked"]];
+    If[i > Length[wordsByLength[8]], Abort[]];
+  ]
+]
+
 
 
 

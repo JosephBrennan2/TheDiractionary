@@ -5,7 +5,6 @@ RunVersion1Scrabblegorithm;
 VisualizeVersion1;
 RunVersion2Scrabblegorithm;
 CreateInitialScrabbleBoard;
-CheckForBlanksUsed;
 UpdateScrabbleBoard;
 FindStartingSquares;
 FindPossibleOverlapPositions;
@@ -24,12 +23,14 @@ RunScrabblegorithm;
 
 Begin["`Private`"]
 
+(* Updates association containing (Tile -> No. Used) pairs. *)
 UpdateUsedTileCount[usedCounts_, word_] :=
  Module[{charCounts},
   charCounts = Counts[Characters[word]];
   Merge[{usedCounts, charCounts}, Total]
   ]
 
+(* Updates association containing (Tile -> No. Remaining) pairs. *)
 UpdateRemainingTileCount[remainingCounts_, word_, blanks_] :=
  	Module[{tiles = Characters[word], charCounts, newCounts, blanksNeeded},
   	    charCounts = Counts[Characters[word]];
@@ -40,19 +41,6 @@ UpdateRemainingTileCount[remainingCounts_, word_, blanks_] :=
    	        Return[newCounts],
    	    Return[remainingCounts]
    	]
-  ]
-
-CheckForBlanksUsed[remainingCounts_, assoc_] := 
- Module[
-  {
-   negativeKeys = 
-    Select[Keys[remainingCounts], remainingCounts[#] < 0 &],
-   blanksUsed,
-   index = Length[assoc] + 1
-   },
-  If[negativeKeys =!= {}, blanksUsed = First[negativeKeys]];
-  AppendTo[assoc, index -> <|"Blank" -> blanksUsed|>];
-  remainingCounts[blanksUsed] = 0
   ]
 
 
@@ -111,7 +99,7 @@ VisualizeVersion1[game_] :=
                 ];
    (* Replace letters with blanks. *)
     epilog = Module[
-      {rEpilog = Reverse[Partition[epilog, 7]], finalTurns},
+      {rEpilog = Partition[epilog, 7], finalTurns},
         finalTurns = {rEpilog[[-2]][[All, 2]][[All, 1]], rEpilog[[-1]][[All, 2]][[All, 1]]};
         rEpilog[[-2, All, 2, 1]] = ReplacePart[finalTurns[[1]], RandomChoice[Position[finalTurns[[1]], blanks[[1]]]] -> "?"];
         rEpilog[[-1, All, 2, 1]] = ReplacePart[finalTurns[[2]], RandomChoice[Position[finalTurns[[2]], blanks[[2]]]] -> "?"];
@@ -274,7 +262,7 @@ UpdateScrabbleBoard[word_, pos_List, direction_String : ("Right" | "Down"), epil
     ]
 
 
-(* Finds list of starting positions of a word that overlaps another already played word. *)
+(* Finds list of starting positions of a new bingo. *)
 FindStartingSquares[boardRow_Integer, boardCol_Integer, retrace_, toTile_, dirOfPlay_] := 
  Module[{posList},
   If[dirOfPlay == "Down", posList = {ToUpperCase[FromLetterNumber[boardRow - retrace]], boardCol + toTile};
@@ -353,8 +341,7 @@ FindPossibleOverlapPositions[assoc_, word_, overlapTileOptions_List] :=
       Keys[Select[overlapSquaresAssoc, Length[Values[#]] == 1 &]] (* Select overlap vectors that overlap exactly one square. *)
     ]
 
-
-
+(* Identify squares used up by a 'word' placed at 'startPos'. *)
 Battleship[word_, startPos_, direction_] :=
  Module[{row, col, length = StringLength[word]},
     {row, col} = startPos;
@@ -364,15 +351,7 @@ Battleship[word_, startPos_, direction_] :=
   ]
  ]
 
-CushionedBattleship[word_, startPos_, direction_] :=
- Module[{row, col, length = StringLength[word]},
-    {row, col} = startPos;
-    If[direction === "Right",
-      Table[{row, col + i}, {i, -1, length}],
-      Table[{ToUpperCase[FromLetterNumber[LetterNumber[row] + i]], col}, {i, -1, length}]
-  ]
- ]
-
+(* Identify squares in the 'forbidden zones' around already played words. *)
 ForbiddenSquares[word_, startPos_, direction_] :=
  Module[{row, col, length = StringLength[word], 
     mainPositions, 
@@ -393,6 +372,7 @@ ForbiddenSquares[word_, startPos_, direction_] :=
    ]
   ]
 
+(* Update 'forbidden squares taking into account the bingo to be overlapped. *)
 UpdateForbiddenSquares[assoc_, bingo_] :=
   DeleteDuplicates[
    Flatten[
@@ -401,7 +381,7 @@ UpdateForbiddenSquares[assoc_, bingo_] :=
       With[{word = #["Bingo"], pos = #["Position"], 
          dir = #["Direction"]},
         
-        If[word == bingo, CushionedBattleship[word, pos, dir], 
+        If[word == bingo, Battleship[word, pos, dir], 
          ForbiddenSquares[word, pos, dir]]
         ] &,
       assoc
@@ -411,9 +391,10 @@ UpdateForbiddenSquares[assoc_, bingo_] :=
     ]
    ]
 
-(* Uses 'blankAssoc' to retrieve the blank required for this play. *)
+(* Uses 'blankAssoc' to retrieve the blank(s) required for this play. *)
 IdentifyBlanks[overlapVector_, blankAssoc_] := SelectFirst[blankAssoc, #["Overlap"] == overlapVector[[3]] &]["Blank"]
 
+(* Formats word ready for it to be displayed with its blanks as "?" tiles. *)
 FormatWordWithBlanks[word_, blanks_] := Module[{formatWord = word},
     Map[
        Module[
@@ -426,6 +407,7 @@ FormatWordWithBlanks[word_, blanks_] := Module[{formatWord = word},
     Return[formatWord]
   ]
 
+(* Determines the blanks allowed at this stage of the iteration. *)
 BlanksAllowed[assoc_, usedCounts_] := 
  Module[{blanksUsed = usedCounts["?"], b},
  If[Length[assoc] < 12, b = 0,
@@ -434,7 +416,7 @@ BlanksAllowed[assoc_, usedCounts_] :=
   Return[b]
   ]
 
-
+(* Algorithmically generates valid bingos and displays them on the Scrabble board to be chosen by the user. *)
 RunScrabblegorithm[] :=
 Module[
   {
@@ -547,7 +529,7 @@ Module[
       If[i == 10000, Print["25% Bingos Checked"]];
       If[i == 20000, Print["50% Bingos Checked"]];
       If[i == 30000, Print["75% Bingos Checked"]];
-      If[i > Length[wordsByLength[8]], Abort[]];
+      If[i > Length[wordsByLength[8]], Print["Sorry! Try Again!"]; Abort[]];
       If[Length[assoc] == 12, i = 1]
     ];
   
@@ -636,7 +618,7 @@ Module[
     If[i == 10000, Print["25% Bingos Checked"]];
     If[i == 20000, Print["50% Bingos Checked"]];
     If[i == 30000, Print["75% Bingos Checked"]];
-    If[i > Length[wordsByLength[8]], Abort[]];
+    If[i > Length[wordsByLength[8]],  Print["Sorry! Try Again!"]; Abort[]];
   ]
 ]
 

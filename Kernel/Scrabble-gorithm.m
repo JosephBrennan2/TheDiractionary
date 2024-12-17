@@ -11,11 +11,12 @@ FindPossibleOverlapPositions;
 ForbiddenSquares;
 UpdateForbiddenSquares;
 Battleship;
-CushionedBattleship;
 IdentifyBlanks;
 FormatWordWithBlanks;
 BlanksAllowed;
 RunScrabblegorithm;
+GameToEpilog;
+PerfectScrabbleGameQ;
 
 
 
@@ -622,8 +623,35 @@ Module[
   ]
 ]
 
+GameToEpilog[game_] := 
+Fold[
+  UpdateScrabbleBoard[
+    game[#2, "Bingo"],
+    game[#2, "Position"],
+    game[#2, "Direction"],
+    #1
+  ] &,
+  {},
+  Range[Length[game]]
+]
 
-
+PerfectScrabbleGameQ[game_] :=
+ Module[{
+   tileBag = KeyDrop[tiles[[All, "Quantity"]], "?"],
+   bingoChars = Flatten[Characters /@ Values[game[[All, "Bingo"]]]],
+   overlapCounts = Counts[Values[game[[All, "Overlap"]]][[2 ;;]]],
+   playedTilesCounts = AssociationThread[CharacterRange["A", "Z"], ConstantArray[0, Length[CharacterRange["A", "Z"]]]],
+   diff, blanks, leftovers
+   },
+  playedTilesCounts = KeySort[Merge[{playedTilesCounts, Counts[DeleteElements[bingoChars, Values[overlapCounts] -> Keys[overlapCounts]]]}, Total]];
+  diff = tileBag - playedTilesCounts;
+  blanks = Flatten[Table[#, {-diff[#]}] & /@ Keys[Select[diff, # < 0 &]]];
+  leftovers = Keys[Select[diff, # > 0 &]];
+  Return[{
+    If[Total[diff] == 0, True, False], 
+    Grid[{{"Blanks:", blanks}, {" Leftovers:", leftovers}}]
+    }]
+  ]
 
 End[]
 
